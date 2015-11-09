@@ -29,7 +29,7 @@ public class FuncionariosController {
         try {
             connFuncionarios.conexao();
                         
-            PreparedStatement pst = connFuncionarios.conn.prepareStatement("INSERT INTO funcionarios (cargo_id, filial_id, nome, sobrenome, cpf, rg, sexo, estado_civil, dt_nasc, mae, telefone, celular, email, obs, dt_admissao, dt_demissao, usuario, senha, banco, agencia, conta, cep, logradouro, numero, bairro, localidade, uf, complemento, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement pst = connFuncionarios.conn.prepareStatement("INSERT INTO funcionarios (cargo_id, filial_id, nome, sobrenome, cpf, rg, sexo, estado_civil, dt_nasc, mae, telefone, celular, email, obs, dt_admissao, dt_demissao, usuario, senha, banco, agencia, conta, cep, logradouro, numero, bairro, localidade, uf, complemento, status, created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
                         
             pst.setInt(1, mod.getCargo_id());
             pst.setInt(2, mod.getFilial_id());
