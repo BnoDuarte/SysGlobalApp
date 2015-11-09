@@ -273,20 +273,16 @@ public class ProdutosView extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextNome, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblCodigo)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jTextNome, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblCodigo)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jTextCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(btnPesquisarCodigo)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(btnPesquisaAvancada))
-                                            .addComponent(lblNome))
-                                        .addGap(251, 251, 251)))
+                                        .addComponent(jTextCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnPesquisarCodigo)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnPesquisaAvancada))
+                                    .addComponent(lblNome))
+                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblCategoria)
                                     .addComponent(jCBoxCategoria, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -553,8 +549,33 @@ public class ProdutosView extends javax.swing.JFrame {
         
         control.Editar(mod);
         
+        btnCancelar.setEnabled(true);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnSalvar.setEnabled(false);
+        btnNovo.setEnabled(true);
+        btnPesquisarCodigo.setEnabled(true);
+        
+        jTextCodigo.setEnabled(true);
+        jTextNome.setEnabled(!true);
+        jCBoxCategoria.setEnabled(!true);
+        jCBoxFabricante.setEnabled(!true);
+        jCBoxRede.setEnabled(!true);
+        jCBoxSistemaOperacional.setEnabled(!true);
+        jCBoxCor.setEnabled(!true);
+        jTextQteMin.setEnabled(!true);
+        jFormattedValor.setEnabled(!true);
+        jCBoxStatus.setEnabled(!true);
+        jTextAreaDescricao.setEnabled(!true);
+        
+        jTextCodigo.setText("");
+        jTextNome.setText("");
+        jTextQteMin.setText("");
+        jFormattedValor.setText("");
+        jTextAreaDescricao.setText("");
+        
         conecta.conexao();
-        preencherTabela("SELECT * FROM produtos WHERE id LIKE '%" + jTextCodigo.getText() + "%'");
+        preencherTabela("SELECT * FROM produtos");
         conecta.desconecta();
     }//GEN-LAST:event_btnAlterarActionPerformed
 
