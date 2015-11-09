@@ -9,6 +9,9 @@ import configs.ConectaBanco;
 import controllers.ServicosController;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import models.ServicosModel;
@@ -23,11 +26,16 @@ public class ServicosView extends javax.swing.JFrame {
     ConectaBanco conecta = new ConectaBanco();
     ConectaBanco connServicos = new ConectaBanco();
     
+    ServicosModel mod = new ServicosModel();
+    ServicosController control = new ServicosController();
+    
     /**
      * Creates new form ServicosView
      */
     public ServicosView() {
         initComponents();
+        
+        this.setIconImage(new ImageIcon(getClass().getResource("../imagens/icones/global2-32px.png")).getImage());
         
     }
 
@@ -318,17 +326,40 @@ public class ServicosView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPesquisaAvancadaActionPerformed
 
     private void jTableServicosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableServicosMouseClicked
-        int indiceLinha = jTableServicos.getSelectedRow();
+        
+        try {
+            String id_servico = "" + jTableServicos.getValueAt(jTableServicos.getSelectedRow(), 0);
 
-        jTextCodigo.setText(jTableServicos.getValueAt(indiceLinha, 0).toString());
-        jTextNome.setText(jTableServicos.getValueAt(indiceLinha, 1).toString());
-        jCboxSituacao.setSelectedItem(jTableServicos.getValueAt(indiceLinha, 2));
+            connServicos.conexao();
+            connServicos.executaSQL("SELECT * FROM servicos WHERE id = '" + id_servico + "'");
+            connServicos.rs.first();
+            
+            jTextCodigo.setText(String.valueOf(connServicos.rs.getInt("id")));
+            jCboxOperadora.setSelectedItem(connServicos.rs.getString("operadora"));
+            jCboxCategoria.setSelectedItem(connServicos.rs.getString("categoria"));
+            jTextValor.setText(connServicos.rs.getString("valor"));
+            jTextComissao.setText(connServicos.rs.getString("comissao"));
+            jCboxSituacao.setSelectedItem(connServicos.rs.getString("status"));
+            
+            connServicos.desconecta();
+            
+            btnCancelar.setEnabled(true);
+            btnAlterar.setEnabled(!false);
+            btnExcluir.setEnabled(!false);
+            btnSalvar.setEnabled(!true);
+            btnNovo.setEnabled(false);
 
-        btnAlterar.setEnabled(true);
-        btnExcluir.setEnabled(true);
-
-        jTextCodigo.setEnabled(true);
-        jTextNome.setEnabled(true);
+            jTextCodigo.setEnabled(false);
+            jTextNome.setEnabled(true);
+            jCboxOperadora.setEnabled(true);
+            jCboxCategoria.setEnabled(true);
+            jTextValor.setEnabled(true);
+            jTextComissao.setEnabled(true);
+            jCboxSituacao.setEnabled(true);
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Erro ao selecionar os dados.\nERRO: "+ex);
+        }    
     }//GEN-LAST:event_jTableServicosMouseClicked
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
@@ -404,8 +435,32 @@ public class ServicosView extends javax.swing.JFrame {
 
         if(resposta == JOptionPane.YES_OPTION) {
             mod.setId(Integer.parseInt(jTextCodigo.getText()));
-            control.ExcluirCargo(mod);
+            control.Excluir(mod);
         }
+        
+        btnCancelar.setEnabled(true);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnSalvar.setEnabled(false);
+        btnNovo.setEnabled(true);
+        btnPesquisarCodigo.setEnabled(true);
+
+        jTextCodigo.setEnabled(true);
+        jTextNome.setEnabled(!true);
+        jCboxOperadora.setEnabled(!true);
+        jCboxCategoria.setEnabled(!true);
+        jTextValor.setEnabled(!true);
+        jTextComissao.setEnabled(!true);
+        jCboxSituacao.setEnabled(!true);
+
+        jTextCodigo.setText("");
+        jTextNome.setText("");
+        jTextValor.setText("");
+        jTextComissao.setText("");
+        
+        conecta.conexao();
+        preencherTabela("SELECT * FROM servicos");
+        conecta.desconecta();
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -460,13 +515,13 @@ public class ServicosView extends javax.swing.JFrame {
         jTableServicos.setModel(modelo);
         jTableServicos.getColumnModel().getColumn(0).setPreferredWidth(60);
         jTableServicos.getColumnModel().getColumn(0).setResizable(false);
-        jTableServicos.getColumnModel().getColumn(1).setPreferredWidth(380);
+        jTableServicos.getColumnModel().getColumn(1).setPreferredWidth(240);
         jTableServicos.getColumnModel().getColumn(1).setResizable(false);
-        jTableServicos.getColumnModel().getColumn(2).setPreferredWidth(102);
+        jTableServicos.getColumnModel().getColumn(2).setPreferredWidth(95);
         jTableServicos.getColumnModel().getColumn(2).setResizable(false);
         jTableServicos.getColumnModel().getColumn(3).setPreferredWidth(90);
         jTableServicos.getColumnModel().getColumn(3).setResizable(false);
-        jTableServicos.getColumnModel().getColumn(4).setPreferredWidth(140);
+        jTableServicos.getColumnModel().getColumn(4).setPreferredWidth(90);
         jTableServicos.getColumnModel().getColumn(4).setResizable(false);
         jTableServicos.getTableHeader().setReorderingAllowed(false);
         jTableServicos.setAutoResizeMode(jTableServicos.AUTO_RESIZE_OFF);
