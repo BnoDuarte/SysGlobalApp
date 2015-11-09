@@ -19,7 +19,7 @@ public class CargosController {
         connCargos.conexao();
         
         try {
-            PreparedStatement pst = connCargos.conn.prepareStatement("INSERT INTO cargos(nome, status, created, modified) VALUES(?, ?, NOW(), NOW())");
+            PreparedStatement pst = connCargos.conn.prepareStatement("INSERT INTO cargos(nome, status, created) VALUES(?, ?, NOW())");
             
             pst.setString(1, mod.getNome());
             pst.setString(2, mod.getStatus());
