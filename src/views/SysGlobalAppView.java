@@ -41,7 +41,6 @@ public class SysGlobalAppView extends javax.swing.JFrame {
         jMenuCargos = new javax.swing.JMenuItem();
         jMenuFiliais = new javax.swing.JMenuItem();
         jMenuFuncionarios = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu10 = new javax.swing.JMenu();
         btnMenuSair = new javax.swing.JMenu();
 
@@ -119,14 +118,6 @@ public class SysGlobalAppView extends javax.swing.JFrame {
         });
         jMenuRH.add(jMenuFuncionarios);
 
-        jMenuItem1.setText("Produtos");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenuRH.add(jMenuItem1);
-
         jMenuBar1.add(jMenuRH);
 
         jMenu10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/graficos32px.png"))); // NOI18N
@@ -187,10 +178,6 @@ public class SysGlobalAppView extends javax.swing.JFrame {
         funcionarios.setVisible(true);
     }//GEN-LAST:event_jMenuFuncionariosActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
     private void jMenuProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuProdutosActionPerformed
         ProdutosView produtos = new ProdutosView();
         produtos.setVisible(true);
@@ -248,7 +235,6 @@ public class SysGlobalAppView extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuFiliais;
     private javax.swing.JMenuItem jMenuFornecedores;
     private javax.swing.JMenuItem jMenuFuncionarios;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenu jMenuOperacional;
     private javax.swing.JMenuItem jMenuProdutos;
     private javax.swing.JMenu jMenuRH;
