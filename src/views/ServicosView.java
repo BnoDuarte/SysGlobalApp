@@ -374,11 +374,14 @@ public class ServicosView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        mod.setId(Integer.parseInt(jTextCodigo.getText()));
         mod.setNome(jTextNome.getText());
-        mod.setStatus((String) jComboBoxSituacao.getSelectedItem());
+        mod.setOperadora((String) jCboxOperadora.getSelectedItem());
+        mod.setCategoria((String) jCboxCategoria.getSelectedItem());
+        mod.setValor(Double.parseDouble(jTextValor.getText()));
+        mod.setComissao(Double.parseDouble(jTextComissao.getText()));
+        mod.setStatus((String) jCboxSituacao.getSelectedItem());
 
-        control.EditarCargo(mod);
+        control.Editar(mod);
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
