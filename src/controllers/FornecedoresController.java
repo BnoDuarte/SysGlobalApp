@@ -19,7 +19,7 @@ public class FornecedoresController {
         connFornecedores.conexao();
         
         try {
-            PreparedStatement pst = connFornecedores.conn.prepareStatement("INSERT INTO fornecedores (razao_social, nome_fantasia, cnpj, ie, telefone, email, contato, cep, logradouro, numero, bairro, localidade, uf, complemento, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement pst = connFornecedores.conn.prepareStatement("INSERT INTO fornecedores (razao_social, nome_fantasia, cnpj, ie, telefone, email, contato, cep, logradouro, numero, bairro, localidade, uf, complemento, status, created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
         
         pst.setString(1, mod.getRazao_social());
         pst.setString(2, mod.getNome_fantasia());
