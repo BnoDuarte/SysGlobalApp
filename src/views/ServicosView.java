@@ -305,14 +305,6 @@ public class ServicosView extends javax.swing.JFrame {
         preencherTabela("SELECT * FROM servicos WHERE id LIKE '%" + jTextCodigo.getText() + "%'");
         conecta.desconecta();
 
-        jTextCodigo.setEnabled(!true);
-        jTextNome.setEnabled(true);
-        jCboxOperadora.setEnabled(true);
-        jCboxCategoria.setEnabled(true);
-        jTextValor.setEnabled(true);
-        jTextComissao.setEnabled(true);
-        jCboxSituacao.setEnabled(true);
-
         btnCancelar.setEnabled(true);
         btnAlterar.setEnabled(false);
         btnExcluir.setEnabled(false);
@@ -335,6 +327,7 @@ public class ServicosView extends javax.swing.JFrame {
             connServicos.rs.first();
             
             jTextCodigo.setText(String.valueOf(connServicos.rs.getInt("id")));
+            jTextNome.setText(connServicos.rs.getString("nome"));
             jCboxOperadora.setSelectedItem(connServicos.rs.getString("operadora"));
             jCboxCategoria.setSelectedItem(connServicos.rs.getString("categoria"));
             jTextValor.setText(connServicos.rs.getString("valor"));
@@ -419,6 +412,8 @@ public class ServicosView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        
+        mod.setId(Integer.parseInt(jTextCodigo.getText()));
         mod.setNome(jTextNome.getText());
         mod.setOperadora((String) jCboxOperadora.getSelectedItem());
         mod.setCategoria((String) jCboxCategoria.getSelectedItem());
@@ -427,6 +422,30 @@ public class ServicosView extends javax.swing.JFrame {
         mod.setStatus((String) jCboxSituacao.getSelectedItem());
 
         control.Editar(mod);
+        
+        btnCancelar.setEnabled(true);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnSalvar.setEnabled(false);
+        btnNovo.setEnabled(true);
+        btnPesquisarCodigo.setEnabled(true);
+
+        jTextCodigo.setEnabled(true);
+        jTextNome.setEnabled(!true);
+        jCboxOperadora.setEnabled(!true);
+        jCboxCategoria.setEnabled(!true);
+        jTextValor.setEnabled(!true);
+        jTextComissao.setEnabled(!true);
+        jCboxSituacao.setEnabled(!true);
+
+        jTextCodigo.setText("");
+        jTextNome.setText("");
+        jTextValor.setText("");
+        jTextComissao.setText("");
+        
+        conecta.conexao();
+        preencherTabela("SELECT * FROM servicos");
+        conecta.desconecta();
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
