@@ -5,6 +5,9 @@
  */
 package views;
 
+import controllers.ServicosController;
+import models.ServicosModel;
+
 /**
  *
  * @author Bruno Duarte
@@ -32,16 +35,16 @@ public class ServicosView extends javax.swing.JFrame {
         btnPesquisarCodigo = new javax.swing.JButton();
         btnPesquisaAvancada = new javax.swing.JButton();
         lblNome = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox();
+        jTextNome = new javax.swing.JTextField();
+        jCboxOperadora = new javax.swing.JComboBox();
         lblOperadora = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        jCboxCategoria = new javax.swing.JComboBox();
         lblCategoria = new javax.swing.JLabel();
         lblValor = new javax.swing.JLabel();
         jTextValor = new javax.swing.JTextField();
         jTextComissao = new javax.swing.JTextField();
         lblComissao = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox();
+        jCboxSituacao = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableCargos = new javax.swing.JTable();
@@ -53,6 +56,7 @@ public class ServicosView extends javax.swing.JFrame {
         btnSair = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Serviços");
 
         lblCodigo.setText("Código");
 
@@ -74,19 +78,28 @@ public class ServicosView extends javax.swing.JFrame {
 
         lblNome.setText("Nome");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Claro", "NET" }));
+        jTextNome.setEnabled(false);
+
+        jCboxOperadora.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Claro", "NET" }));
+        jCboxOperadora.setEnabled(false);
 
         lblOperadora.setText("Operadora");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Banda Larga", "Controle", "Pós-Pago", "Pré-Pago" }));
+        jCboxCategoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Banda Larga", "Controle", "Pós-Pago", "Pré-Pago" }));
+        jCboxCategoria.setEnabled(false);
 
         lblCategoria.setText("Categoria");
 
         lblValor.setText("Valor Plano");
 
+        jTextValor.setEnabled(false);
+
+        jTextComissao.setEnabled(false);
+
         lblComissao.setText("Comissão");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Ativo", "Inativo" }));
+        jCboxSituacao.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Ativo", "Inativo" }));
+        jCboxSituacao.setEnabled(false);
 
         jLabel1.setText("Situação");
 
@@ -116,6 +129,7 @@ public class ServicosView extends javax.swing.JFrame {
 
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/salvar16px.png"))); // NOI18N
         btnSalvar.setText("Salvar");
+        btnSalvar.setEnabled(false);
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarActionPerformed(evt);
@@ -124,6 +138,7 @@ public class ServicosView extends javax.swing.JFrame {
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/editar16px.png"))); // NOI18N
         btnAlterar.setText("Alterar");
+        btnAlterar.setEnabled(false);
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAlterarActionPerformed(evt);
@@ -132,6 +147,7 @@ public class ServicosView extends javax.swing.JFrame {
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/excluir16px.png"))); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.setEnabled(false);
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcluirActionPerformed(evt);
@@ -169,18 +185,18 @@ public class ServicosView extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextNome, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblNome))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCboxOperadora, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblOperadora))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblCategoria)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jComboBox2, 0, 135, Short.MAX_VALUE)))
+                            .addComponent(jCboxCategoria, 0, 135, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblCodigo)
@@ -201,7 +217,7 @@ public class ServicosView extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
-                                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(jCboxSituacao, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnNovo)
@@ -236,9 +252,9 @@ public class ServicosView extends javax.swing.JFrame {
                     .addComponent(lblCategoria))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCboxOperadora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCboxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblValor)
@@ -248,7 +264,7 @@ public class ServicosView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextComissao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jCboxSituacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -308,24 +324,33 @@ public class ServicosView extends javax.swing.JFrame {
         btnSalvar.setEnabled(true);
         btnNovo.setEnabled(false);
         btnPesquisarCodigo.setEnabled(false);
-        btnPesquisarNome.setEnabled(false);
 
         jTextCodigo.setEnabled(false);
         jTextNome.setEnabled(true);
-        jComboBoxSituacao.setEnabled(true);
+        jCboxOperadora.setEnabled(true);
+        jCboxCategoria.setEnabled(true);
+        jTextValor.setEnabled(true);
+        jTextComissao.setEnabled(true);
+        jCboxSituacao.setEnabled(true);
 
         jTextCodigo.setText("");
         jTextNome.setText("");
+        jTextValor.setText("");
+        jTextComissao.setText("");
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        CargosModel mod = new CargosModel();
+        ServicosModel mod = new ServicosModel();
 
         mod.setNome(jTextNome.getText());
-        mod.setStatus((String) jComboBoxSituacao.getSelectedItem());
+        mod.setOperadora((String) jCboxOperadora.getSelectedItem());
+        mod.setCategoria((String) jCboxCategoria.getSelectedItem());
+        mod.setValor(Double.parseDouble(jTextValor.getText()));
+        mod.setComissao(Double.parseDouble(jTextComissao.getText()));
+        mod.setStatus((String) jCboxSituacao.getSelectedItem());
 
-        CargosController control = new CargosController();
-        control.InserirCargos(mod);
+        ServicosController control = new ServicosController();
+        control.Inserir(mod);
 
         btnCancelar.setEnabled(true);
         btnAlterar.setEnabled(false);
@@ -333,14 +358,19 @@ public class ServicosView extends javax.swing.JFrame {
         btnSalvar.setEnabled(!true);
         btnNovo.setEnabled(!false);
         btnPesquisarCodigo.setEnabled(!false);
-        btnPesquisarNome.setEnabled(!false);
 
-        jTextCodigo.setEnabled(!false);
+        jTextCodigo.setEnabled(false);
         jTextNome.setEnabled(true);
-        jComboBoxSituacao.setEnabled(!true);
+        jCboxOperadora.setEnabled(true);
+        jCboxCategoria.setEnabled(true);
+        jTextValor.setEnabled(true);
+        jTextComissao.setEnabled(true);
+        jCboxSituacao.setEnabled(true);
 
         jTextCodigo.setText("");
         jTextNome.setText("");
+        jTextValor.setText("");
+        jTextComissao.setText("");
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
@@ -368,14 +398,19 @@ public class ServicosView extends javax.swing.JFrame {
         btnSalvar.setEnabled(false);
         btnNovo.setEnabled(true);
         btnPesquisarCodigo.setEnabled(true);
-        btnPesquisarNome.setEnabled(true);
 
         jTextCodigo.setEnabled(true);
-        jTextNome.setEnabled(true);
-        jComboBoxSituacao.setEnabled(!true);
+        jTextNome.setEnabled(!true);
+        jCboxOperadora.setEnabled(!true);
+        jCboxCategoria.setEnabled(!true);
+        jTextValor.setEnabled(!true);
+        jTextComissao.setEnabled(!true);
+        jCboxSituacao.setEnabled(!true);
 
         jTextCodigo.setText("");
         jTextNome.setText("");
+        jTextValor.setText("");
+        jTextComissao.setText("");
 
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -431,15 +466,15 @@ public class ServicosView extends javax.swing.JFrame {
     private javax.swing.JButton btnPesquisarCodigo;
     private javax.swing.JButton btnSair;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
+    private javax.swing.JComboBox jCboxCategoria;
+    private javax.swing.JComboBox jCboxOperadora;
+    private javax.swing.JComboBox jCboxSituacao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableCargos;
     private javax.swing.JTextField jTextCodigo;
     private javax.swing.JTextField jTextComissao;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextNome;
     private javax.swing.JTextField jTextValor;
     private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblCodigo;
