@@ -45,7 +45,7 @@ public class ServicosController {
         connServicos.conexao();
         
         try {
-            PreparedStatement pst = connServicos.conn.prepareStatement("UPDATE servicos SET nome = ?, operadora = ?, categoria = ?, valor = ?, comissao = ?, status = ?");
+            PreparedStatement pst = connServicos.conn.prepareStatement("UPDATE servicos SET nome = ?, operadora = ?, categoria = ?, valor = ?, comissao = ?, status = ? WHERE id = ?");
             
             pst.setString(1, mod.getNome());
             pst.setString(2, mod.getOperadora());
