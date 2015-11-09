@@ -47,6 +47,7 @@ public class FornecedoresView extends javax.swing.JFrame {
 
             mask = new MaskFormatter("#####-###");
             jFormattedTextCep.setFormatterFactory(new DefaultFormatterFactory(mask));
+            
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(rootPane, "Não foi possível formatar o campo.\nERRO: "+ex);
         }
@@ -585,6 +586,23 @@ public class FornecedoresView extends javax.swing.JFrame {
         btnSalvar.setEnabled(!true);
         btnNovo.setEnabled(!false);
         btnPesquisarCodigo.setEnabled(!false);
+        
+        jTextCodigo.setEnabled(true);
+        jTextRazaoSocial.setEnabled(!true);
+        jTextFantasia.setEnabled(!true);
+        jFormattedTextCnpj.setEnabled(!true);
+        jTextInscEstadual.setEnabled(!true);
+        jFormattedTextFone.setEnabled(!true);
+        jComboBoxSituacao.setEnabled(!true);
+        jTextEmail.setEnabled(!true);
+        jTextContato.setEnabled(!true);
+        jFormattedTextCep.setEnabled(!true);
+        jTextEndereco.setEnabled(!true);
+        jTextNumero.setEnabled(!true);
+        jTextComplemento.setEnabled(!true);
+        jTextBairro.setEnabled(!true);
+        jTextCidade.setEnabled(!true);
+        jTextUf.setEnabled(!true);
 
         jTextCodigo.setText("");
         jTextRazaoSocial.setText("");
