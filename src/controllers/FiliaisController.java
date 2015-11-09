@@ -20,7 +20,7 @@ public class FiliaisController {
         connFiliais.conexao();
         
         try {
-            PreparedStatement pst = connFiliais.conn.prepareStatement("INSERT INTO filiais (razao_social, nome_fantasia, cnpj, ie, telefone, email, responsavel, cep, logradouro, numero, bairro, localidade, uf, complemento, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement pst = connFiliais.conn.prepareStatement("INSERT INTO filiais (razao_social, nome_fantasia, cnpj, ie, telefone, email, responsavel, cep, logradouro, numero, bairro, localidade, uf, complemento, status, created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
         
         pst.setString(1, mod.getRazao_social());
         pst.setString(2, mod.getNome_fantasia());
