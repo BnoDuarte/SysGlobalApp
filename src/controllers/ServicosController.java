@@ -4,6 +4,8 @@ package controllers;
 import configs.ConectaBanco;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import models.ServicosModel;
 
@@ -64,6 +66,20 @@ public class ServicosController {
     }
     
     public void Excluir(ServicosModel mod) {
+        connServicos.conexao();
         
+        try {
+            PreparedStatement pst = connServicos.conn.prepareStatement("DELETE FROM servicos WHERE id = ?");
+            
+            pst.setInt(1, mod.getId());
+            pst.execute();
+            
+            JOptionPane.showMessageDialog(null, "Serviço excluído com sucesso.");
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível excluir o serviço.\nERRO: " + ex);
+        }
+        
+        connServicos.desconecta();
     }
 }
