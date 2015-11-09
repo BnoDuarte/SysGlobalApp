@@ -23,6 +23,7 @@ public class FornecedoresModel {
     private String uf;
     private String complemento;
     private String status;
+    private String created;
     
     private String pesquisa;
 
@@ -262,6 +263,20 @@ public class FornecedoresModel {
      */
     public void setPesquisa(String pesquisa) {
         this.pesquisa = pesquisa;
+    }
+
+    /**
+     * @return the created
+     */
+    public String getCreated() {
+        return created;
+    }
+
+    /**
+     * @param created the created to set
+     */
+    public void setCreated(String created) {
+        this.created = created;
     }
     
 }
