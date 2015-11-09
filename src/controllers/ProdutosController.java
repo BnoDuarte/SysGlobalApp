@@ -20,7 +20,7 @@ public class ProdutosController {
         connProdutos.conexao();
         
         try {
-            PreparedStatement pst = connProdutos.conn.prepareStatement("INSERT INTO produtos (nome, categoria, fabricante, rede, sistema_operacional, cor, qte_min, valor, status, descricao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement pst = connProdutos.conn.prepareStatement("INSERT INTO produtos (nome, categoria, fabricante, rede, sistema_operacional, cor, qte_min, valor, status, descricao, created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
             
             pst.setString(1, mod.getNome());
             pst.setString(2, mod.getCategoria());
