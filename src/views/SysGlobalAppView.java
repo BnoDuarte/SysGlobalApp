@@ -37,6 +37,7 @@ public class SysGlobalAppView extends javax.swing.JFrame {
         jMenuOperacional = new javax.swing.JMenu();
         jMenuFornecedores = new javax.swing.JMenuItem();
         jMenuProdutos = new javax.swing.JMenuItem();
+        jMenuServiços = new javax.swing.JMenuItem();
         jMenuRH = new javax.swing.JMenu();
         jMenuCargos = new javax.swing.JMenuItem();
         jMenuFiliais = new javax.swing.JMenuItem();
@@ -83,6 +84,14 @@ public class SysGlobalAppView extends javax.swing.JFrame {
             }
         });
         jMenuOperacional.add(jMenuProdutos);
+
+        jMenuServiços.setText("Serviços");
+        jMenuServiços.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuServiçosActionPerformed(evt);
+            }
+        });
+        jMenuOperacional.add(jMenuServiços);
 
         jMenuBar1.add(jMenuOperacional);
 
@@ -188,6 +197,11 @@ public class SysGlobalAppView extends javax.swing.JFrame {
         fornecedores.setVisible(true);
     }//GEN-LAST:event_jMenuFornecedoresActionPerformed
 
+    private void jMenuServiçosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuServiçosActionPerformed
+        ServicosView servicos = new ServicosView();
+        servicos.setVisible(true);
+    }//GEN-LAST:event_jMenuServiçosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -238,5 +252,6 @@ public class SysGlobalAppView extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuOperacional;
     private javax.swing.JMenuItem jMenuProdutos;
     private javax.swing.JMenu jMenuRH;
+    private javax.swing.JMenuItem jMenuServiços;
     // End of variables declaration//GEN-END:variables
 }
