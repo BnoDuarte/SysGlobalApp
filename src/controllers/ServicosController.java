@@ -41,5 +41,29 @@ public class ServicosController {
     
     public void Editar(ServicosModel mod) {
         connServicos.conexao();
+        
+        try {
+            PreparedStatement pst = connServicos.conn.prepareStatement("UPDATE servicos SET nome = ?, operadora = ?, categoria = ?, valor = ?, comissao = ?, status = ?");
+            
+            pst.setString(1, mod.getNome());
+            pst.setString(2, mod.getOperadora());
+            pst.setString(3, mod.getCategoria());
+            pst.setDouble(4, mod.getValor());
+            pst.setDouble(5, mod.getComissao());
+            pst.setString(6, mod.getStatus());
+            pst.setInt(7, mod.getId());
+            pst.execute();
+            
+            JOptionPane.showMessageDialog(null, "Cadastro alterado com sucesso.");
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível alterar o cadastro.\n ERRO: "+ex);
+        }
+        
+        connServicos.desconecta();
+    }
+    
+    public void Excluir(ServicosModel mod) {
+        
     }
 }
