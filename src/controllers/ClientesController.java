@@ -4,8 +4,6 @@ package controllers;
 import configs.ConectaBanco;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import models.ClientesModel;
 
@@ -58,6 +56,64 @@ public class ClientesController {
         }
         
         connClientes.desconecta();
+    }
+    
+    public void Editar(ClientesModel mod) {
+        connClientes.conexao();
+        
+        try {
+            PreparedStatement pst = connClientes.conn.prepareStatement("UPDATE clientes SET nome = ?, sobrenome = ?, cpf = ?, rg = ?, sexo = ?, estado_civil = ?, dt_nasc = ?, mae = ?, telefone = ?, celular = ?, email = ?, obs = ?, cep = ?, logradouro = ?, numero = ?, bairro = ?, localidade = ?, uf = ?, complemento = ?, status = ? WHERE id = ?");
+            
+            pst.setString(1, mod.getNome());
+            pst.setString(2, mod.getSobrenome());
+            pst.setString(3, mod.getCpf());
+            pst.setString(4, mod.getRg());
+            pst.setString(5, mod.getSexo());
+            pst.setString(6, mod.getEstado_civil());
+            
+            String nasc_dia = mod.getDt_nasc().substring(0, 2);
+            String nasc_mes = mod.getDt_nasc().substring(3, 5);
+            String nasc_ano = mod.getDt_nasc().substring(6);
+            String dt_nascDB = nasc_ano+"-"+nasc_mes+"-"+nasc_dia;
+            pst.setString(7, dt_nascDB);
+            
+            pst.setString(8, mod.getMae());
+            pst.setString(9, mod.getTelefone());
+            pst.setString(10, mod.getCelular());
+            pst.setString(11, mod.getEmail());
+            pst.setString(12, mod.getObs());
+            pst.setString(13, mod.getCep());
+            pst.setString(14, mod.getLogradouro());
+            pst.setString(15, mod.getNumero());
+            pst.setString(16, mod.getBairro());
+            pst.setString(17, mod.getLocalidade());
+            pst.setString(18, mod.getUf());
+            pst.setString(19, mod.getComplemento());
+            pst.setString(20, mod.getStatus());
+            pst.setInt(21, mod.getId());
+            pst.execute();
+            
+            JOptionPane.showMessageDialog(null, "Cadastro alterado com sucesso.");
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível alterar o cadastro.\n ERRO: "+ex);
+        }
+    }
+    
+    public void Excluir(ClientesModel mod) {
+        connClientes.conexao();
+        
+        try {
+            PreparedStatement pst = connClientes.conn.prepareStatement("DELETE FROM clientes WHERE id = ?");
+            
+            pst.setInt(1, mod.getId());
+            pst.execute();
+            
+            JOptionPane.showMessageDialog(null, "Cliente excluído com sucesso.");
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível excluir o cliente.\nERRO: " + ex);
+        }
     }
     
     public ClientesModel buscaFuncionariosId(ClientesModel mod){
