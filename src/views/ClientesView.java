@@ -6,7 +6,22 @@
 
 package views;
 
+import configs.ConectaBanco;
+import controllers.ClientesController;
+import controllers.FuncionariosController;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
+import models.ClientesModel;
+import models.TabelasModel;
+import models.WebServiceCep;
 
 /**
  * @author Bruno Duarte
@@ -14,11 +29,37 @@ import javax.swing.ImageIcon;
  */
 public class ClientesView extends javax.swing.JFrame {
 
+    ConectaBanco conecta = new ConectaBanco();
+    ConectaBanco connClientes = new ConectaBanco();
+    
+    ClientesController control = new ClientesController();
+    ClientesModel mod = new ClientesModel();
+    
     /** Creates new form ClientesView */
     public ClientesView() {
         initComponents();
         
         this.setIconImage(new ImageIcon(getClass().getResource("../imagens/icones/global2-32px.png")).getImage());
+        
+        try {
+            MaskFormatter mask = new MaskFormatter("##/##/####");
+            jFormattedTextDtNascimento.setFormatterFactory(new DefaultFormatterFactory(mask));
+
+            mask = new MaskFormatter("###.###.###-##");
+            jFormattedTextCpf.setFormatterFactory(new DefaultFormatterFactory(mask));
+            
+            mask = new MaskFormatter("#####-###");
+            jFormattedTextCep.setFormatterFactory(new DefaultFormatterFactory(mask));
+            
+            mask = new MaskFormatter("(##) ####-####");
+            jFormattedTextTelefone.setFormatterFactory(new DefaultFormatterFactory(mask));
+            
+            mask = new MaskFormatter("(##) #####-####");
+            jFormattedTextCelular.setFormatterFactory(new DefaultFormatterFactory(mask));
+            
+        } catch (ParseException ex) {
+            Logger.getLogger(FiliaisView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** This method is called from within the constructor to
@@ -60,7 +101,7 @@ public class ClientesView extends javax.swing.JFrame {
         jTextAreaObs = new javax.swing.JTextArea();
         lblObservacao = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTableFiliais = new javax.swing.JTable();
+        jTableClientes = new javax.swing.JTable();
         btnNovo = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
         btnAlterar = new javax.swing.JButton();
@@ -161,7 +202,7 @@ public class ClientesView extends javax.swing.JFrame {
 
         lblObservacao.setText("Observação");
 
-        jTableFiliais.setModel(new javax.swing.table.DefaultTableModel(
+        jTableClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -172,12 +213,12 @@ public class ClientesView extends javax.swing.JFrame {
 
             }
         ));
-        jTableFiliais.addMouseListener(new java.awt.event.MouseAdapter() {
+        jTableClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTableFiliaisMouseClicked(evt);
+                jTableClientesMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(jTableFiliais);
+        jScrollPane2.setViewportView(jTableClientes);
 
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/add16px.png"))); // NOI18N
         btnNovo.setText("Novo");
@@ -531,41 +572,10 @@ public class ClientesView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPesquisarCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarCodigoActionPerformed
-        FuncionariosModel mod = new FuncionariosModel();
-        mod.setPesquisa(jTextCodigo.getText());
 
-        FuncionariosController control = new FuncionariosController();
-        FuncionariosModel model = control.buscaFuncionariosId(mod);
-
-        jTextCodigo.setText(String.valueOf(model.getId()));
-        jTextNome.setText(model.getNome());
-        jTextSobrenome.setText(model.getSobrenome());
-        jComboBoxSexo.setSelectedItem(mod.getSexo());
-        jFormattedTextDtNascimento.setText(model.getDt_nasc());
-        jFormattedTextCpf.setText(model.getCpf());
-        jTextRg.setText(model.getRg());
-        jTextMae.setText(model.getMae());
-        jComboBoxEstadoCivil.setSelectedItem(model.getEstado_civil());
-        jFormattedTextTelefone.setText(model.getTelefone());
-        jFormattedTextCelular.setText(model.getCelular());
-        jTextEmail.setText(model.getEmail());
-        jFormattedTextCep.setText(model.getCep());
-        jTextEndereco.setText(model.getLogradouro());
-        jTextNumero.setText(model.getNumero());
-        jTextComplemento.setText(model.getComplemento());
-        jTextBairro.setText(model.getBairro());
-        jTextCidade.setText(model.getLocalidade());
-        jTextUf.setText(model.getUf());
-        jComboBoxCargo.setSelectedItem(model.getCargo_id());
-        jComboBoxFilial.setSelectedItem(model.getFilial_id());
-        jFormattedTextDtAdmissao.setText(model.getDt_admissao());
-        jFormattedTextDtDemissao.setText(model.getDt_demissao());
-        jTextUsuario.setText(model.getUsuario());
-        jComboBoxStatus.setSelectedItem(model.getStatus());
-        jComboBoxBanco.setSelectedItem(model.getBanco());
-        jTextAgencia.setText(model.getAgencia());
-        jTextContaCorrente.setText(model.getConta());
-        jTextAreaObs.setText(model.getObs());
+        conecta.conexao();
+        preencherTabela("SELECT * FROM clientes WHERE id LIKE '%" + jTextCodigo.getText() + "%'");
+        conecta.desconecta();
 
         btnCancelar.setEnabled(true);
         btnAlterar.setEnabled(true);
@@ -574,42 +584,92 @@ public class ClientesView extends javax.swing.JFrame {
         btnNovo.setEnabled(true);
         btnPesquisarCodigo.setEnabled(!false);
 
-        jTextCodigo.setEnabled(!true);
-        jTextNome.setEnabled(true);
-        jTextSobrenome.setEnabled(true);
-        jFormattedTextCpf.setEnabled(true);
-        jTextRg.setEnabled(true);
-        jComboBoxSexo.setEnabled(true);
-        jComboBoxEstadoCivil.setEnabled(true);
-        jFormattedTextDtNascimento.setEnabled(true);
-        jTextMae.setEnabled(true);
-        jFormattedTextTelefone.setEnabled(true);
-        jFormattedTextCelular.setEnabled(true);
-        jTextEmail.setEnabled(true);
-        jTextAreaObs.setEnabled(true);
-        jFormattedTextDtAdmissao.setEnabled(true);
-        jFormattedTextDtDemissao.setEnabled(true);
-        jTextUsuario.setEnabled(true);
-        jPasswordFieldSenha.setEnabled(true);
-        jPasswordFieldRepetirSenha.setEnabled(true);
-        jComboBoxBanco.setEnabled(true);
-        jTextAgencia.setEnabled(true);
-        jTextContaCorrente.setEnabled(true);
-        jFormattedTextCep.setEnabled(true);
-        jTextEndereco.setEnabled(true);
-        jTextNumero.setEnabled(true);
-        jTextComplemento.setEnabled(true);
-        jTextBairro.setEnabled(true);
-        jTextCidade.setEnabled(true);
-        jTextUf.setEnabled(true);
-        jComboBoxStatus.setEnabled(true);
-        jComboBoxCargo.setEnabled(true);
-        jComboBoxFilial.setEnabled(true);
+        jTextCodigo.setEnabled(true);
+        jTextNome.setEnabled(!true);
+        jTextSobrenome.setEnabled(!true);
+        jFormattedTextCpf.setEnabled(!true);
+        jTextRg.setEnabled(!true);
+        jComboBoxSexo.setEnabled(!true);
+        jComboBoxEstadoCivil.setEnabled(!true);
+        jFormattedTextDtNascimento.setEnabled(!true);
+        jTextMae.setEnabled(!true);
+        jFormattedTextTelefone.setEnabled(!true);
+        jFormattedTextCelular.setEnabled(!true);
+        jTextEmail.setEnabled(!true);
+        jTextAreaObs.setEnabled(!true);
+        jFormattedTextCep.setEnabled(!true);
+        jTextEndereco.setEnabled(!true);
+        jTextNumero.setEnabled(!true);
+        jTextComplemento.setEnabled(!true);
+        jTextBairro.setEnabled(!true);
+        jTextCidade.setEnabled(!true);
+        jTextUf.setEnabled(!true);
+        jComboBoxSituacao.setEnabled(!true);
     }//GEN-LAST:event_btnPesquisarCodigoActionPerformed
 
-    private void jTableFiliaisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableFiliaisMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTableFiliaisMouseClicked
+    private void jTableClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableClientesMouseClicked
+        try {
+            String id_clientes = ""+jTableClientes.getValueAt(jTableClientes.getSelectedRow(), 0);
+
+            connClientes.conexao();
+            connClientes.executaSQL("SELECT * FROM clientes WHERE id = '"+id_clientes+"'");
+            connClientes.rs.first();
+
+            jTextCodigo.setText(String.valueOf(connClientes.rs.getInt("id")));
+            jTextNome.setText(connClientes.rs.getString("nome"));
+            jTextSobrenome.setText(connClientes.rs.getString("sobrenome"));
+            jFormattedTextCpf.setText(connClientes.rs.getString("cpf"));
+            jTextRg.setText(connClientes.rs.getString("rg"));
+            jComboBoxSexo.setSelectedItem(connClientes.rs.getString("sexo"));
+            jComboBoxEstadoCivil.setSelectedItem(connClientes.rs.getString("estado_civil"));
+            jFormattedTextDtNascimento.setText(connClientes.rs.getString("dt_nasc"));
+            jTextMae.setText(connClientes.rs.getString("mae"));
+            jFormattedTextTelefone.setText(connClientes.rs.getString("telefone"));
+            jFormattedTextCelular.setText(connClientes.rs.getString("celular"));
+            jTextEmail.setText(connClientes.rs.getString("email"));
+            jTextAreaObs.setText(connClientes.rs.getString("obs"));
+            jFormattedTextCep.setText(connClientes.rs.getString("cep"));
+            jTextEndereco.setText(connClientes.rs.getString("logradouro"));
+            jTextNumero.setText(connClientes.rs.getString("numero"));
+            jTextComplemento.setText(connClientes.rs.getString("complemento"));
+            jTextBairro.setText(connClientes.rs.getString("bairro"));
+            jTextCidade.setText(connClientes.rs.getString("localidade"));
+            jTextUf.setText(connClientes.rs.getString("uf"));
+            jComboBoxSituacao.setSelectedItem(connClientes.rs.getString("status"));
+
+            connClientes.desconecta();
+
+            btnAlterar.setEnabled(true);
+            btnExcluir.setEnabled(true);
+            btnPesquisaAvancada.setEnabled(false);
+            btnPesquisarCodigo.setEnabled(false);
+
+            jTextCodigo.setEnabled(!true);
+            jTextNome.setEnabled(true);
+            jTextSobrenome.setEnabled(true);
+            jFormattedTextCpf.setEnabled(true);
+            jTextRg.setEnabled(true);
+            jComboBoxSexo.setEnabled(true);
+            jComboBoxEstadoCivil.setEnabled(true);
+            jFormattedTextDtNascimento.setEnabled(true);
+            jTextMae.setEnabled(true);
+            jFormattedTextTelefone.setEnabled(true);
+            jFormattedTextCelular.setEnabled(true);
+            jTextEmail.setEnabled(true);
+            jTextAreaObs.setEnabled(true);
+            jFormattedTextCep.setEnabled(true);
+            jTextEndereco.setEnabled(true);
+            jTextNumero.setEnabled(true);
+            jTextComplemento.setEnabled(true);
+            jTextBairro.setEnabled(true);
+            jTextCidade.setEnabled(true);
+            jTextUf.setEnabled(true);
+            jComboBoxSituacao.setEnabled(true);
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Erro ao selecionar os dados.\nERRO: "+ex);
+        }
+    }//GEN-LAST:event_jTableClientesMouseClicked
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         btnCancelar.setEnabled(true);
@@ -662,7 +722,29 @@ public class ClientesView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        // TODO add your handling code here:
+        
+        mod.setNome(jTextNome.getText());
+        mod.setSobrenome(jTextSobrenome.getText());
+        mod.setSexo((String) jComboBoxSexo.getSelectedItem());
+        mod.setDt_nasc(jFormattedTextDtNascimento.getText());
+        mod.setCpf(jFormattedTextCpf.getText());
+        mod.setRg(jTextRg.getText());
+        mod.setMae(jTextMae.getText());
+        mod.setEstado_civil((String) jComboBoxEstadoCivil.getSelectedItem());
+        mod.setTelefone(jFormattedTextTelefone.getText());
+        mod.setCelular(jFormattedTextCelular.getText());
+        mod.setEmail(jTextEmail.getText());
+        mod.setCep(jFormattedTextCep.getText());
+        mod.setLogradouro(jTextEndereco.getText());
+        mod.setNumero(jTextNumero.getText());
+        mod.setComplemento(jTextComplemento.getText());
+        mod.setBairro(jTextBairro.getText());
+        mod.setLocalidade(jTextCidade.getText());
+        mod.setUf(jTextUf.getText());
+        mod.setStatus((String) jComboBoxSituacao.getSelectedItem());
+        mod.setObs(jTextAreaObs.getText());
+        
+        control.Inserir(mod);
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
@@ -751,6 +833,67 @@ public class ClientesView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextUfActionPerformed
 
+    public void preencherTabela(String SQL){
+        ArrayList dados = new ArrayList();
+
+        String[] Colunas = new String[]{"Código", "Cpf", "Nome Completo", "Cidade", "Status"};
+        conecta.executaSQL(SQL);
+
+        try {
+            conecta.rs.first();
+            do {
+                dados.add(new Object[]{conecta.rs.getInt("id"), conecta.rs.getString("cpf"), conecta.rs.getString("nome")+" "+conecta.rs.getString("sobrenome"), conecta.rs.getString("localidade"), conecta.rs.getString("status")});
+        } while(conecta.rs.next());
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao preencher a Tabela.\nERRO: "+ ex);
+        }
+
+        TabelasModel modelo = new TabelasModel(dados, Colunas);
+
+        jTableClientes.setModel(modelo);
+        jTableClientes.getColumnModel().getColumn(0).setPreferredWidth(60);
+        jTableClientes.getColumnModel().getColumn(0).setResizable(false);
+        jTableClientes.getColumnModel().getColumn(1).setPreferredWidth(112);
+        jTableClientes.getColumnModel().getColumn(1).setResizable(false);
+        jTableClientes.getColumnModel().getColumn(2).setPreferredWidth(370);
+        jTableClientes.getColumnModel().getColumn(2).setResizable(false);
+        jTableClientes.getColumnModel().getColumn(3).setPreferredWidth(150);
+        jTableClientes.getColumnModel().getColumn(3).setResizable(false);
+        jTableClientes.getColumnModel().getColumn(4).setPreferredWidth(90);
+        jTableClientes.getColumnModel().getColumn(4).setResizable(false);
+        jTableClientes.getTableHeader().setReorderingAllowed(false);
+        jTableClientes.setAutoResizeMode(jTableClientes.AUTO_RESIZE_OFF);
+        jTableClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        conecta.desconecta();
+    }
+    
+    public void buscaCep() {
+        //Faz a busca para o cep 58043-280
+        WebServiceCep webServiceCep = WebServiceCep.searchCep(jFormattedTextCep.getText());
+        //A ferramenta de busca ignora qualquer caracter que n?o seja n?mero.
+
+        //caso a busca ocorra bem, imprime os resultados.
+        if (webServiceCep.wasSuccessful()) {
+            jTextEndereco.setText(webServiceCep.getLogradouroFull());
+            jTextCidade.setText(webServiceCep.getCidade());
+            jTextBairro.setText(webServiceCep.getBairro());
+            jTextUf.setText(webServiceCep.getUf());
+            System.out.println("Cep: " + webServiceCep.getCep());
+            System.out.println("Logradouro: " + webServiceCep.getLogradouroFull());
+            System.out.println("Bairro: " + webServiceCep.getBairro());
+            System.out.println("Cidade: "
+                    + webServiceCep.getCidade() + "/" + webServiceCep.getUf());
+
+            //caso haja problemas imprime as exce??es.
+        } else {
+            JOptionPane.showMessageDialog(null, "Erro numero: " + webServiceCep.getResulCode());
+
+            JOptionPane.showMessageDialog(null, "Descrição do erro: " + webServiceCep.getResultText());
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -806,7 +949,7 @@ public class ClientesView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTableFiliais;
+    private javax.swing.JTable jTableClientes;
     private javax.swing.JTextArea jTextAreaObs;
     private javax.swing.JTextField jTextBairro;
     private javax.swing.JTextField jTextCidade;
