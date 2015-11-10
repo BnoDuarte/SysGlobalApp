@@ -25,12 +25,11 @@ public class FuncionariosController {
     String nomeFilial;
     
     public void Inserir(FuncionariosModel mod) {
+        connFuncionarios.conexao();
         
         try {
-            connFuncionarios.conexao();
-                        
             PreparedStatement pst = connFuncionarios.conn.prepareStatement("INSERT INTO funcionarios (cargo_id, filial_id, nome, sobrenome, cpf, rg, sexo, estado_civil, dt_nasc, mae, telefone, celular, email, obs, dt_admissao, dt_demissao, usuario, senha, banco, agencia, conta, cep, logradouro, numero, bairro, localidade, uf, complemento, status, created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-                        
+
             pst.setInt(1, mod.getCargo_id());
             pst.setInt(2, mod.getFilial_id());
             pst.setString(3, mod.getNome());
@@ -39,31 +38,31 @@ public class FuncionariosController {
             pst.setString(6, mod.getRg());
             pst.setString(7, mod.getSexo());
             pst.setString(8, mod.getEstado_civil());
-            
+
             String nasc_dia = mod.getDt_nasc().substring(0, 2);
             String nasc_mes = mod.getDt_nasc().substring(3, 5);
             String nasc_ano = mod.getDt_nasc().substring(6);
-            String dt_nascDB = nasc_ano+"-"+nasc_mes+"-"+nasc_dia;
+            String dt_nascDB = nasc_ano + "-" + nasc_mes + "-" + nasc_dia;
             pst.setString(9, dt_nascDB);
-            
+
             pst.setString(10, mod.getMae());
             pst.setString(11, mod.getTelefone());
             pst.setString(12, mod.getCelular());
             pst.setString(13, mod.getEmail());
             pst.setString(14, mod.getObs());
-            
+
             String admissao_dia = mod.getDt_admissao().substring(0, 2);
             String admissao_mes = mod.getDt_admissao().substring(3, 5);
             String admissao_ano = mod.getDt_admissao().substring(6);
-            String dt_admissaoDB = admissao_ano+"-"+admissao_mes+"-"+admissao_dia;
+            String dt_admissaoDB = admissao_ano + "-" + admissao_mes + "-" + admissao_dia;
             pst.setString(15, dt_admissaoDB);
-            
+
             String demissao_dia = mod.getDt_demissao().substring(0, 2);
             String demissao_mes = mod.getDt_demissao().substring(3, 5);
             String demissao_ano = mod.getDt_demissao().substring(6);
-            String dt_demissaoDB = demissao_ano+"-"+demissao_mes+"-"+demissao_dia;
+            String dt_demissaoDB = demissao_ano + "-" + demissao_mes + "-" + demissao_dia;
             pst.setString(16, dt_demissaoDB);
-            
+
             pst.setString(17, mod.getUsuario());
             pst.setString(18, mod.getSenha());
             pst.setString(19, mod.getBanco());
@@ -78,11 +77,11 @@ public class FuncionariosController {
             pst.setString(28, mod.getComplemento());
             pst.setString(29, mod.getStatus());
             pst.execute();
-            
+
             JOptionPane.showMessageDialog(null, "Dados inseridos com sucesso.");
-            
+
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao inserir os dados.\n ERRO: "+ ex);
+            JOptionPane.showMessageDialog(null, "Erro ao inserir os dados.\n ERRO: " + ex);
         }
         
         connFuncionarios.desconecta();
