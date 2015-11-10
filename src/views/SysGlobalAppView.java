@@ -34,6 +34,7 @@ public class SysGlobalAppView extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuComercial = new javax.swing.JMenu();
+        jMenuClientes = new javax.swing.JMenuItem();
         jMenuOperacional = new javax.swing.JMenu();
         jMenuFornecedores = new javax.swing.JMenuItem();
         jMenuProdutos = new javax.swing.JMenuItem();
@@ -60,6 +61,15 @@ public class SysGlobalAppView extends javax.swing.JFrame {
         jMenuComercial.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jMenuComercial.setMargin(new java.awt.Insets(10, 10, 10, 10));
         jMenuComercial.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        jMenuClientes.setText("Clientes");
+        jMenuClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuClientesActionPerformed(evt);
+            }
+        });
+        jMenuComercial.add(jMenuClientes);
+
         jMenuBar1.add(jMenuComercial);
 
         jMenuOperacional.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/settings32px.png"))); // NOI18N
@@ -202,6 +212,11 @@ public class SysGlobalAppView extends javax.swing.JFrame {
         servicos.setVisible(true);
     }//GEN-LAST:event_jMenuServiçosActionPerformed
 
+    private void jMenuClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuClientesActionPerformed
+        ClientesView clientes = new ClientesView();
+        clientes.setVisible(true);
+    }//GEN-LAST:event_jMenuClientesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -245,6 +260,7 @@ public class SysGlobalAppView extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuCargos;
+    private javax.swing.JMenuItem jMenuClientes;
     private javax.swing.JMenu jMenuComercial;
     private javax.swing.JMenuItem jMenuFiliais;
     private javax.swing.JMenuItem jMenuFornecedores;
