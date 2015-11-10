@@ -8,7 +8,6 @@ package views;
 
 import configs.ConectaBanco;
 import controllers.ClientesController;
-import controllers.FuncionariosController;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -128,6 +127,7 @@ public class ClientesView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Clientes");
+        setSize(new java.awt.Dimension(816, 650));
 
         lblSobrenome.setText("Sobrenome");
 
@@ -477,17 +477,15 @@ public class ClientesView extends javax.swing.JFrame {
                                     .addComponent(lblSobrenome))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblSexo)
-                                    .addComponent(jComboBoxSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jComboBoxSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblSexo))
+                                .addGap(20, 20, 20))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblCodigo)
                                 .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jFormattedTextDtNascimento)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblDtNascimento)
-                                .addGap(36, 36, 36))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblDtNascimento)
+                            .addComponent(jFormattedTextDtNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblObservacao)
@@ -510,7 +508,7 @@ public class ClientesView extends javax.swing.JFrame {
                     .addComponent(btnPesquisarCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnPesquisaAvancada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jTextCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNome)
                     .addComponent(lblSobrenome)
@@ -553,10 +551,10 @@ public class ClientesView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblObservacao)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
                     .addComponent(btnAlterar)
@@ -564,10 +562,10 @@ public class ClientesView extends javax.swing.JFrame {
                     .addComponent(btnCancelar)
                     .addComponent(btnExcluir)
                     .addComponent(btnNovo))
-                .addContainerGap())
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
-        pack();
+        setSize(new java.awt.Dimension(832, 719));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -745,14 +743,198 @@ public class ClientesView extends javax.swing.JFrame {
         mod.setObs(jTextAreaObs.getText());
         
         control.Inserir(mod);
+        
+        btnCancelar.setEnabled(true);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnSalvar.setEnabled(!true);
+        btnNovo.setEnabled(!false);
+        btnPesquisaAvancada.setEnabled(!false);
+
+        jTextCodigo.setEnabled(true);
+        jTextNome.setEnabled(!true);
+        jTextSobrenome.setEnabled(!true);
+        jFormattedTextCpf.setEnabled(!true);
+        jTextRg.setEnabled(!true);
+        jComboBoxSexo.setEnabled(!true);
+        jComboBoxEstadoCivil.setEnabled(!true);
+        jFormattedTextDtNascimento.setEnabled(!true);
+        jTextMae.setEnabled(!true);
+        jFormattedTextTelefone.setEnabled(!true);
+        jFormattedTextCelular.setEnabled(!true);
+        jTextEmail.setEnabled(!true);
+        jTextAreaObs.setEnabled(!true);
+        jFormattedTextCep.setEnabled(!true);
+        jTextEndereco.setEnabled(!true);
+        jTextNumero.setEnabled(!true);
+        jTextComplemento.setEnabled(!true);
+        jTextBairro.setEnabled(!true);
+        jTextCidade.setEnabled(!true);
+        jTextUf.setEnabled(!true);
+        jComboBoxSituacao.setEnabled(!true);
+        
+        jTextCodigo.setText("");
+        jTextNome.setText("");
+        jTextSobrenome.setText("");
+        jFormattedTextCpf.setText("");
+        jTextRg.setText("");
+        jFormattedTextDtNascimento.setText("");
+        jTextMae.setText("");
+        jFormattedTextTelefone.setText("");
+        jFormattedTextCelular.setText("");
+        jTextEmail.setText("");
+        jTextAreaObs.setText("");
+        jFormattedTextCep.setText("");
+        jTextEndereco.setText("");
+        jTextNumero.setText("");
+        jTextComplemento.setText("");
+        jTextBairro.setText("");
+        jTextCidade.setText("");
+        jTextUf.setText("");
+        
+        conecta.conexao();
+        preencherTabela("SELECT * FROM clientes");
+        conecta.desconecta();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        // TODO add your handling code here:
+        mod.setId(Integer.parseInt(jTextCodigo.getText()));
+        mod.setNome(jTextNome.getText());
+        mod.setSobrenome(jTextSobrenome.getText());
+        mod.setSexo((String) jComboBoxSexo.getSelectedItem());
+        mod.setDt_nasc(jFormattedTextDtNascimento.getText());
+        mod.setCpf(jFormattedTextCpf.getText());
+        mod.setRg(jTextRg.getText());
+        mod.setMae(jTextMae.getText());
+        mod.setEstado_civil((String) jComboBoxEstadoCivil.getSelectedItem());
+        mod.setTelefone(jFormattedTextTelefone.getText());
+        mod.setCelular(jFormattedTextCelular.getText());
+        mod.setEmail(jTextEmail.getText());
+        mod.setCep(jFormattedTextCep.getText());
+        mod.setLogradouro(jTextEndereco.getText());
+        mod.setNumero(jTextNumero.getText());
+        mod.setComplemento(jTextComplemento.getText());
+        mod.setBairro(jTextBairro.getText());
+        mod.setLocalidade(jTextCidade.getText());
+        mod.setUf(jTextUf.getText());
+        mod.setStatus((String) jComboBoxSituacao.getSelectedItem());
+        mod.setObs(jTextAreaObs.getText());
+
+        control.Editar(mod);
+        
+        btnCancelar.setEnabled(true);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnSalvar.setEnabled(!true);
+        btnNovo.setEnabled(!false);
+        btnPesquisaAvancada.setEnabled(!false);
+
+        jTextCodigo.setEnabled(true);
+        jTextNome.setEnabled(!true);
+        jTextSobrenome.setEnabled(!true);
+        jFormattedTextCpf.setEnabled(!true);
+        jTextRg.setEnabled(!true);
+        jComboBoxSexo.setEnabled(!true);
+        jComboBoxEstadoCivil.setEnabled(!true);
+        jFormattedTextDtNascimento.setEnabled(!true);
+        jTextMae.setEnabled(!true);
+        jFormattedTextTelefone.setEnabled(!true);
+        jFormattedTextCelular.setEnabled(!true);
+        jTextEmail.setEnabled(!true);
+        jTextAreaObs.setEnabled(!true);
+        jFormattedTextCep.setEnabled(!true);
+        jTextEndereco.setEnabled(!true);
+        jTextNumero.setEnabled(!true);
+        jTextComplemento.setEnabled(!true);
+        jTextBairro.setEnabled(!true);
+        jTextCidade.setEnabled(!true);
+        jTextUf.setEnabled(!true);
+        jComboBoxSituacao.setEnabled(!true);
+        
+        jTextCodigo.setText("");
+        jTextNome.setText("");
+        jTextSobrenome.setText("");
+        jFormattedTextCpf.setText("");
+        jTextRg.setText("");
+        jFormattedTextDtNascimento.setText("");
+        jTextMae.setText("");
+        jFormattedTextTelefone.setText("");
+        jFormattedTextCelular.setText("");
+        jTextEmail.setText("");
+        jTextAreaObs.setText("");
+        jFormattedTextCep.setText("");
+        jTextEndereco.setText("");
+        jTextNumero.setText("");
+        jTextComplemento.setText("");
+        jTextBairro.setText("");
+        jTextCidade.setText("");
+        jTextUf.setText("");
+        
+        conecta.conexao();
+        preencherTabela("SELECT * FROM clientes");
+        conecta.desconecta();
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        // TODO add your handling code here:
+        int resposta = 0;
+        resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir?");
+
+        if(resposta == JOptionPane.YES_OPTION) {
+            mod.setId(Integer.parseInt(jTextCodigo.getText()));
+            control.Excluir(mod);
+        }
+        
+        btnCancelar.setEnabled(true);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnSalvar.setEnabled(!true);
+        btnNovo.setEnabled(!false);
+        btnPesquisaAvancada.setEnabled(!false);
+
+        jTextCodigo.setEnabled(true);
+        jTextNome.setEnabled(!true);
+        jTextSobrenome.setEnabled(!true);
+        jFormattedTextCpf.setEnabled(!true);
+        jTextRg.setEnabled(!true);
+        jComboBoxSexo.setEnabled(!true);
+        jComboBoxEstadoCivil.setEnabled(!true);
+        jFormattedTextDtNascimento.setEnabled(!true);
+        jTextMae.setEnabled(!true);
+        jFormattedTextTelefone.setEnabled(!true);
+        jFormattedTextCelular.setEnabled(!true);
+        jTextEmail.setEnabled(!true);
+        jTextAreaObs.setEnabled(!true);
+        jFormattedTextCep.setEnabled(!true);
+        jTextEndereco.setEnabled(!true);
+        jTextNumero.setEnabled(!true);
+        jTextComplemento.setEnabled(!true);
+        jTextBairro.setEnabled(!true);
+        jTextCidade.setEnabled(!true);
+        jTextUf.setEnabled(!true);
+        jComboBoxSituacao.setEnabled(!true);
+        
+        jTextCodigo.setText("");
+        jTextNome.setText("");
+        jTextSobrenome.setText("");
+        jFormattedTextCpf.setText("");
+        jTextRg.setText("");
+        jFormattedTextDtNascimento.setText("");
+        jTextMae.setText("");
+        jFormattedTextTelefone.setText("");
+        jFormattedTextCelular.setText("");
+        jTextEmail.setText("");
+        jTextAreaObs.setText("");
+        jFormattedTextCep.setText("");
+        jTextEndereco.setText("");
+        jTextNumero.setText("");
+        jTextComplemento.setText("");
+        jTextBairro.setText("");
+        jTextCidade.setText("");
+        jTextUf.setText("");
+        
+        conecta.conexao();
+        preencherTabela("SELECT * FROM clientes");
+        conecta.desconecta();
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -854,7 +1036,7 @@ public class ClientesView extends javax.swing.JFrame {
         jTableClientes.setModel(modelo);
         jTableClientes.getColumnModel().getColumn(0).setPreferredWidth(60);
         jTableClientes.getColumnModel().getColumn(0).setResizable(false);
-        jTableClientes.getColumnModel().getColumn(1).setPreferredWidth(112);
+        jTableClientes.getColumnModel().getColumn(1).setPreferredWidth(127);
         jTableClientes.getColumnModel().getColumn(1).setResizable(false);
         jTableClientes.getColumnModel().getColumn(2).setPreferredWidth(370);
         jTableClientes.getColumnModel().getColumn(2).setResizable(false);
