@@ -37,7 +37,6 @@ public class FuncionariosView extends javax.swing.JFrame {
      */
     public FuncionariosView() {
         initComponents();
-        connFuncionarios.conexao();
         
         connFiliais.conexao();
         connFiliais.executaSQL("SELECT * FROM filiais ORDER BY nome_fantasia");
@@ -895,8 +894,7 @@ public class FuncionariosView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        FuncionariosModel mod = new FuncionariosModel();
-                       
+        connFuncionarios.conexao();
         try {
             mod.setNome(jTextNome.getText());
             mod.setSobrenome(jTextSobrenome.getText());
@@ -926,23 +924,89 @@ public class FuncionariosView extends javax.swing.JFrame {
             mod.setConta(jTextContaCorrente.getText());
             mod.setObs(jTextAreaObs.getText());
 
+            connFiliais.conexao();
             connFiliais.executaSQL("SELECT * FROM filiais WHERE nome_fantasia = '"+ jComboBoxFilial.getSelectedItem() + "'");
             connFiliais.rs.first();
             mod.setFilial_id(connFiliais.rs.getInt("id"));
             connFiliais.desconecta();
             
+            connCargos.conexao();
             connCargos.executaSQL("SELECT * FROM cargos WHERE nome = '"+ jComboBoxCargo.getSelectedItem() + "'");
             connCargos.rs.first();
             mod.setCargo_id(connCargos.rs.getInt("id"));
             connCargos.desconecta();
             
-            FuncionariosController control = new FuncionariosController();
             control.Inserir(mod);
+            
+            btnCancelar.setEnabled(true);
+            btnAlterar.setEnabled(false);
+            btnExcluir.setEnabled(false);
+            btnSalvar.setEnabled(!true);
+            btnNovo.setEnabled(!false);
+            btnPesquisaAvancada.setEnabled(!false);
+
+            jTextCodigo.setEnabled(true);
+            jTextNome.setEnabled(!true);
+            jTextSobrenome.setEnabled(!true);
+            jFormattedTextCpf.setEnabled(!true);
+            jTextRg.setEnabled(!true);
+            jComboBoxSexo.setEnabled(!true);
+            jComboBoxEstadoCivil.setEnabled(!true);
+            jFormattedTextDtNascimento.setEnabled(!true);
+            jTextMae.setEnabled(!true);
+            jFormattedTextTelefone.setEnabled(!true);
+            jFormattedTextCelular.setEnabled(!true);
+            jTextEmail.setEnabled(!true);
+            jTextAreaObs.setEnabled(!true);
+            jFormattedTextDtAdmissao.setEnabled(!true);
+            jFormattedTextDtDemissao.setEnabled(!true);
+            jTextUsuario.setEnabled(!true);
+            jPasswordFieldSenha.setEnabled(!true);
+            jPasswordFieldRepetirSenha.setEnabled(!true);
+            jComboBoxBanco.setEnabled(!true);
+            jTextAgencia.setEnabled(!true);
+            jTextContaCorrente.setEnabled(!true);
+            jFormattedTextCep.setEnabled(!true);
+            jTextEndereco.setEnabled(!true);
+            jTextNumero.setEnabled(!true);
+            jTextComplemento.setEnabled(!true);
+            jTextBairro.setEnabled(!true);
+            jTextCidade.setEnabled(!true);
+            jTextUf.setEnabled(!true);
+            jComboBoxStatus.setEnabled(!true);
+            jComboBoxCargo.setEnabled(!true);
+            jComboBoxFilial.setEnabled(!true);
+
+            jTextCodigo.setText("");
+            jTextNome.setText("");
+            jTextSobrenome.setText("");
+            jFormattedTextCpf.setText("");
+            jTextRg.setText("");
+            jFormattedTextDtNascimento.setText("");
+            jTextMae.setText("");
+            jFormattedTextTelefone.setText("");
+            jFormattedTextCelular.setText("");
+            jTextEmail.setText("");
+            jTextAreaObs.setText("");
+            jFormattedTextDtAdmissao.setText("");
+            jFormattedTextDtDemissao.setText("");
+            jTextUsuario.setText("");
+            jPasswordFieldSenha.setText("");
+            jPasswordFieldRepetirSenha.setText("");
+            jTextAgencia.setText("");
+            jTextContaCorrente.setText("");
+            jFormattedTextCep.setText("");
+            jTextEndereco.setText("");
+            jTextNumero.setText("");
+            jTextComplemento.setText("");
+            jTextBairro.setText("");
+            jTextCidade.setText("");
+            jTextUf.setText("");
             
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane, "Não foi possível salvar os dados.\nERRO: "+ex);
         }
-        
+        connFuncionarios.desconecta();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
