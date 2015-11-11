@@ -3,6 +3,7 @@ package views;
 
 import configs.ConectaBanco;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  * @author Bruno Duarte
@@ -179,7 +180,12 @@ public class SysGlobalAppView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMenuSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMenuSairMouseClicked
-        System.exit(0);
+        int resposta = 0;
+        resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente sair do sistema?");
+
+        if(resposta == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
     }//GEN-LAST:event_btnMenuSairMouseClicked
 
     private void jMenuCargosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuCargosActionPerformed
