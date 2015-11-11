@@ -7,13 +7,17 @@ package views;
 
 import configs.ConectaBanco;
 import controllers.VendasController;
+import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
+import models.TabelasModel;
 import models.VendasModel;
 
 /**
@@ -24,9 +28,13 @@ public class VendasView extends javax.swing.JFrame {
 
     ConectaBanco conecta = new ConectaBanco();
     ConectaBanco connVendas = new ConectaBanco();
+    ConectaBanco connClientes = new ConectaBanco();
+    ConectaBanco connProdutos = new ConectaBanco();
+    ConectaBanco connServicos = new ConectaBanco();
     
     VendasModel mod = new VendasModel();
     VendasController control = new VendasController();
+    
     
     /**
      * Creates new form VendasView
@@ -76,6 +84,7 @@ public class VendasView extends javax.swing.JFrame {
         lblVendedor = new javax.swing.JLabel();
         jCBoxVendedor = new javax.swing.JComboBox();
         btnPesquisaCliente = new javax.swing.JButton();
+        jTextClienteId = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jCBoxNaturezaVenda = new javax.swing.JComboBox();
         lblNaturezaVenda = new javax.swing.JLabel();
@@ -84,8 +93,6 @@ public class VendasView extends javax.swing.JFrame {
         jCBoxTipoVenda = new javax.swing.JComboBox();
         lblProduto = new javax.swing.JLabel();
         btnPesquisaProduto = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTablePesquisaVenda = new javax.swing.JTable();
         lblPesquisaVenda = new javax.swing.JLabel();
         btnPesquisaServico = new javax.swing.JButton();
         lblServico = new javax.swing.JLabel();
@@ -118,6 +125,10 @@ public class VendasView extends javax.swing.JFrame {
         lblOperadoraPortada = new javax.swing.JLabel();
         jFormattedDtPortabilidade = new javax.swing.JFormattedTextField();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTablePesquisa = new javax.swing.JTable();
+        jTextServicoId = new javax.swing.JTextField();
+        jTextProdutoId = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Vendas");
@@ -191,6 +202,13 @@ public class VendasView extends javax.swing.JFrame {
 
         btnPesquisaCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/search16px.png"))); // NOI18N
         btnPesquisaCliente.setEnabled(false);
+        btnPesquisaCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisaClienteActionPerformed(evt);
+            }
+        });
+
+        jTextClienteId.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -206,6 +224,8 @@ public class VendasView extends javax.swing.JFrame {
                             .addComponent(lblCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 206, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jTextClienteId, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextCliente)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnPesquisaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -218,7 +238,9 @@ public class VendasView extends javax.swing.JFrame {
                 .addComponent(lblCliente)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextClienteId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnPesquisaCliente))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblVendedor)
@@ -257,7 +279,7 @@ public class VendasView extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCBoxTipoVenda, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jCBoxNaturezaVenda, 0, 106, Short.MAX_VALUE)
+                        .addComponent(jCBoxNaturezaVenda, 0, 1, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(jCheckBoxPortabilidade))
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -288,27 +310,11 @@ public class VendasView extends javax.swing.JFrame {
 
         btnPesquisaProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/search16px.png"))); // NOI18N
         btnPesquisaProduto.setEnabled(false);
-
-        jScrollPane1.setEnabled(false);
-
-        jTablePesquisaVenda.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jTablePesquisaVenda.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {},
-                {},
-                {},
-                {}
-            },
-            new String [] {
-
-            }
-        ));
-        jTablePesquisaVenda.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTablePesquisaVendaMouseClicked(evt);
+        btnPesquisaProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisaProdutoActionPerformed(evt);
             }
         });
-        jScrollPane1.setViewportView(jTablePesquisaVenda);
 
         lblPesquisaVenda.setText("Pesquisa");
         lblPesquisaVenda.setEnabled(false);
@@ -539,6 +545,28 @@ public class VendasView extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jTablePesquisa.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jTablePesquisa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTablePesquisaMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(jTablePesquisa);
+
+        jTextServicoId.setEnabled(false);
+
+        jTextProdutoId.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -547,7 +575,6 @@ public class VendasView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -555,26 +582,21 @@ public class VendasView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblProduto)
-                        .addGap(375, 375, 375)
-                        .addComponent(lblServico)
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGap(337, 337, 337))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextProdutoId, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnPesquisaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAddProduto)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextServico)
+                        .addComponent(jTextServicoId, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTextServico, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnPesquisaServico, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAddServico))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblPesquisaVenda)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnNovo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -592,7 +614,16 @@ public class VendasView extends javax.swing.JFrame {
                             .addComponent(lblItensVenda)
                             .addComponent(jScrollPane2))
                         .addGap(18, 18, 18)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblProduto)
+                                .addGap(375, 375, 375)
+                                .addComponent(lblServico))
+                            .addComponent(lblPesquisaVenda))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -612,16 +643,19 @@ public class VendasView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnPesquisaServico)
-                    .addComponent(jTextServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextServicoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnPesquisaProduto)
-                        .addComponent(jTextProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextProdutoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnAddServico)
                     .addComponent(btnAddProduto))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblPesquisaVenda)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblItensVenda)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -648,16 +682,12 @@ public class VendasView extends javax.swing.JFrame {
         JOptionPane.showInputDialog(null, "teste");
     }//GEN-LAST:event_jCheckBoxPortabilidadeActionPerformed
 
-    private void jTablePesquisaVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablePesquisaVendaMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTablePesquisaVendaMouseClicked
-
     private void jTableItensVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableItensVendaMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTableItensVendaMouseClicked
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        jTextCodigo.setEnabled(true);
+        jTextCodigo.setEnabled(!true);
         jFormattedDataVenda.setEnabled(true);
         jCBoxFormaPagto.setEnabled(true);
         jCBoxNaturezaVenda.setEnabled(true);
@@ -668,7 +698,7 @@ public class VendasView extends javax.swing.JFrame {
         jFormattedNtcHabilitado.setEnabled(true);
         jTextProduto.setEnabled(true);
         jTextServico.setEnabled(true);
-        jTablePesquisaVenda.setEnabled(true);
+        jTablePesquisa.setEnabled(true);
         jTableItensVenda.setEnabled(true);
         
         btnCancelar.setEnabled(true);
@@ -686,11 +716,7 @@ public class VendasView extends javax.swing.JFrame {
     
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         
-        btnCancelar.setEnabled(true);
-        btnAlterar.setEnabled(false);
-        btnExcluir.setEnabled(false);
-        btnSalvar.setEnabled(!true);
-        btnNovo.setEnabled(!false);
+        
 
     }//GEN-LAST:event_btnSalvarActionPerformed
 
@@ -732,7 +758,7 @@ public class VendasView extends javax.swing.JFrame {
         jFormattedNtcHabilitado.setEnabled(!true);
         jTextProduto.setEnabled(!true);
         jTextServico.setEnabled(!true);
-        jTablePesquisaVenda.setEnabled(!true);
+        jTablePesquisa.setEnabled(!true);
         jTableItensVenda.setEnabled(!true);
         
         btnCancelar.setEnabled(!true);
@@ -755,6 +781,118 @@ public class VendasView extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
+    private void btnPesquisaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaClienteActionPerformed
+        conecta.conexao();
+        preencherTabelaPesquisaCliente("SELECT * FROM clientes WHERE nome LIKE '%" + jTextCliente.getText() + "%'");
+        conecta.desconecta();
+    }//GEN-LAST:event_btnPesquisaClienteActionPerformed
+
+    private void jTablePesquisaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablePesquisaMouseClicked
+        try {
+            String id_cliente = "" + jTablePesquisa.getValueAt(jTablePesquisa.getSelectedRow(), 0);
+
+            connClientes.conexao();
+            connClientes.executaSQL("SELECT * FROM clientes WHERE id ='" + id_cliente + "'");
+            connClientes.rs.first();
+            
+            jTextClienteId.setText(connClientes.rs.getString("id"));
+            jTextCliente.setText(connClientes.rs.getString("nome")+" "+connClientes.rs.getString("sobrenome"));
+            
+            String id_produto = "" + jTablePesquisa.getValueAt(jTablePesquisa.getSelectedRow(), 0);
+            
+            connProdutos.conexao();
+            connProdutos.executaSQL("SELECT * FROM produtos WHERE id ='"+id_produto+"'");
+            connProdutos.rs.first();
+            
+            jTextProdutoId.setText(connProdutos.rs.getString("id"));
+            jTextProduto.setText(connProdutos.rs.getString("nome"));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(VendasView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        connClientes.desconecta();
+        connProdutos.desconecta();
+    }//GEN-LAST:event_jTablePesquisaMouseClicked
+
+    private void btnPesquisaProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaProdutoActionPerformed
+        conecta.conexao();
+        preencherTabelaPesquisaProduto("SELECT * FROM produtos WHERE nome LIKE '%" + jTextProduto.getText() + "%'");
+        conecta.desconecta();
+    }//GEN-LAST:event_btnPesquisaProdutoActionPerformed
+
+    public void preencherTabelaPesquisaCliente(String SQL){
+        ArrayList dados = new ArrayList();
+
+        String[] Colunas = new String[]{"Código", "Nome Completo", "CPF", "Celular", "Cidade"};
+        conecta.executaSQL(SQL);
+
+        try {
+            conecta.rs.first();
+            do {
+                dados.add(new Object[]{conecta.rs.getInt("id"), conecta.rs.getString("nome")+" "+conecta.rs.getString("sobrenome"), conecta.rs.getString("cpf"), conecta.rs.getString("celular"), conecta.rs.getString("localidade")+" / "+conecta.rs.getString("uf")});
+        } while(conecta.rs.next());
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não existem registros com os termos pesquisados.\nERRO: "+ ex);
+        }
+
+        TabelasModel modelo = new TabelasModel(dados, Colunas);
+
+        jTablePesquisa.setModel(modelo);
+        jTablePesquisa.getColumnModel().getColumn(0).setPreferredWidth(60);
+        jTablePesquisa.getColumnModel().getColumn(0).setResizable(false);
+        jTablePesquisa.getColumnModel().getColumn(1).setPreferredWidth(330);
+        jTablePesquisa.getColumnModel().getColumn(1).setResizable(false);
+        jTablePesquisa.getColumnModel().getColumn(2).setPreferredWidth(130);
+        jTablePesquisa.getColumnModel().getColumn(2).setResizable(false);
+        jTablePesquisa.getColumnModel().getColumn(3).setPreferredWidth(130);
+        jTablePesquisa.getColumnModel().getColumn(3).setResizable(false);
+        jTablePesquisa.getColumnModel().getColumn(4).setPreferredWidth(182);
+        jTablePesquisa.getColumnModel().getColumn(4).setResizable(false);
+        jTablePesquisa.getTableHeader().setReorderingAllowed(false);
+        jTablePesquisa.setAutoResizeMode(jTablePesquisa.AUTO_RESIZE_OFF);
+        jTablePesquisa.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        conecta.desconecta();
+    }
+    
+    public void preencherTabelaPesquisaProduto(String SQL){
+        ArrayList dados = new ArrayList();
+
+        String[] Colunas = new String[]{"Código", "Nome", "Fabricante", "Rede", "Cor"};
+        conecta.executaSQL(SQL);
+
+        try {
+            conecta.rs.first();
+            do {
+                dados.add(new Object[]{conecta.rs.getInt("id"), conecta.rs.getString("nome"), conecta.rs.getString("fabricante"), conecta.rs.getString("rede"), conecta.rs.getString("cor")});
+        } while(conecta.rs.next());
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não existem registros com os termos pesquisados.\nERRO: "+ ex);
+        }
+
+        TabelasModel modelo = new TabelasModel(dados, Colunas);
+
+        jTablePesquisa.setModel(modelo);
+        jTablePesquisa.getColumnModel().getColumn(0).setPreferredWidth(60);
+        jTablePesquisa.getColumnModel().getColumn(0).setResizable(false);
+        jTablePesquisa.getColumnModel().getColumn(1).setPreferredWidth(330);
+        jTablePesquisa.getColumnModel().getColumn(1).setResizable(false);
+        jTablePesquisa.getColumnModel().getColumn(2).setPreferredWidth(130);
+        jTablePesquisa.getColumnModel().getColumn(2).setResizable(false);
+        jTablePesquisa.getColumnModel().getColumn(3).setPreferredWidth(130);
+        jTablePesquisa.getColumnModel().getColumn(3).setResizable(false);
+        jTablePesquisa.getColumnModel().getColumn(4).setPreferredWidth(182);
+        jTablePesquisa.getColumnModel().getColumn(4).setResizable(false);
+        jTablePesquisa.getTableHeader().setReorderingAllowed(false);
+        jTablePesquisa.setAutoResizeMode(jTablePesquisa.AUTO_RESIZE_OFF);
+        jTablePesquisa.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        conecta.desconecta();
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -819,14 +957,17 @@ public class VendasView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTableItensVenda;
-    private javax.swing.JTable jTablePesquisaVenda;
+    private javax.swing.JTable jTablePesquisa;
     private javax.swing.JTextField jTextCliente;
+    private javax.swing.JTextField jTextClienteId;
     private javax.swing.JTextField jTextCodigo;
     private javax.swing.JTextField jTextProduto;
+    private javax.swing.JTextField jTextProdutoId;
     private javax.swing.JTextField jTextServico;
+    private javax.swing.JTextField jTextServicoId;
     private javax.swing.JTextField jTextSubProdutos;
     private javax.swing.JTextField jTextSubServicos;
     private javax.swing.JTextField jTextTotal;
