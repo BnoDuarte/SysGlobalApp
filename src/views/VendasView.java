@@ -35,6 +35,7 @@ public class VendasView extends javax.swing.JFrame {
     VendasModel mod = new VendasModel();
     VendasController control = new VendasController();
     
+    int flag = 1;
     
     /**
      * Creates new form VendasView
@@ -321,6 +322,11 @@ public class VendasView extends javax.swing.JFrame {
 
         btnPesquisaServico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/search16px.png"))); // NOI18N
         btnPesquisaServico.setEnabled(false);
+        btnPesquisaServico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisaServicoActionPerformed(evt);
+            }
+        });
 
         lblServico.setText("Serviço");
         lblServico.setEnabled(false);
@@ -521,7 +527,7 @@ public class VendasView extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCBoxOperadoraPortada, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblOperadoraPortada))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jFormattedDtPortabilidade, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
@@ -582,22 +588,6 @@ public class VendasView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextProdutoId, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPesquisaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAddProduto)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextServicoId, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextServico, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPesquisaServico, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAddServico))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnNovo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSalvar)
@@ -615,15 +605,32 @@ public class VendasView extends javax.swing.JFrame {
                             .addComponent(jScrollPane2))
                         .addGap(18, 18, 18)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblProduto)
-                                .addGap(375, 375, 375)
-                                .addComponent(lblServico))
+                                .addComponent(jTextProdutoId, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnPesquisaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnAddProduto))
+                            .addComponent(lblProduto)
                             .addComponent(lblPesquisaVenda))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblServico)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jTextServicoId, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextServico)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnPesquisaServico, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnAddServico)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -761,6 +768,14 @@ public class VendasView extends javax.swing.JFrame {
         jTablePesquisa.setEnabled(!true);
         jTableItensVenda.setEnabled(!true);
         
+        jTextCodigo.setText("");
+        jFormattedDataVenda.setText("");
+        jCheckBoxPortabilidade.setSelected(false);
+        jTextCliente.setText("");
+        jFormattedNtcHabilitado.setText("");
+        jTextProduto.setText("");
+        jTextServico.setText(""); 
+        
         btnCancelar.setEnabled(!true);
         btnAlterar.setEnabled(false);
         btnExcluir.setEnabled(false);
@@ -782,44 +797,78 @@ public class VendasView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnPesquisaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaClienteActionPerformed
+        flag = 1;
+        
         conecta.conexao();
         preencherTabelaPesquisaCliente("SELECT * FROM clientes WHERE nome LIKE '%" + jTextCliente.getText() + "%'");
         conecta.desconecta();
     }//GEN-LAST:event_btnPesquisaClienteActionPerformed
 
     private void jTablePesquisaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablePesquisaMouseClicked
-        try {
-            String id_cliente = "" + jTablePesquisa.getValueAt(jTablePesquisa.getSelectedRow(), 0);
+        if(flag == 1) {
+            try {
+                String id_cliente = "" + jTablePesquisa.getValueAt(jTablePesquisa.getSelectedRow(), 0);
 
-            connClientes.conexao();
-            connClientes.executaSQL("SELECT * FROM clientes WHERE id ='" + id_cliente + "'");
-            connClientes.rs.first();
-            
-            jTextClienteId.setText(connClientes.rs.getString("id"));
-            jTextCliente.setText(connClientes.rs.getString("nome")+" "+connClientes.rs.getString("sobrenome"));
-            
-            String id_produto = "" + jTablePesquisa.getValueAt(jTablePesquisa.getSelectedRow(), 0);
-            
-            connProdutos.conexao();
-            connProdutos.executaSQL("SELECT * FROM produtos WHERE id ='"+id_produto+"'");
-            connProdutos.rs.first();
-            
-            jTextProdutoId.setText(connProdutos.rs.getString("id"));
-            jTextProduto.setText(connProdutos.rs.getString("nome"));
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(VendasView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        connClientes.desconecta();
-        connProdutos.desconecta();
+                connClientes.conexao();
+                connClientes.executaSQL("SELECT * FROM clientes WHERE id ='" + id_cliente + "'");
+                connClientes.rs.first();
+
+                jTextClienteId.setText(connClientes.rs.getString("id"));
+                jTextCliente.setText(connClientes.rs.getString("nome") + " " + connClientes.rs.getString("sobrenome"));
+
+            } catch (SQLException ex) {
+                Logger.getLogger(VendasView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            connClientes.desconecta();
+
+        } else if (flag == 2) {
+            try {
+                String id_produto = "" + jTablePesquisa.getValueAt(jTablePesquisa.getSelectedRow(), 0);
+
+                connProdutos.conexao();
+                connProdutos.executaSQL("SELECT * FROM produtos WHERE id ='" + id_produto + "'");
+                connProdutos.rs.first();
+
+                jTextProdutoId.setText(connProdutos.rs.getString("id"));
+                jTextProduto.setText(connProdutos.rs.getString("nome"));
+
+            } catch (SQLException ex) {
+                Logger.getLogger(VendasView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            connProdutos.desconecta();
+        } else {
+            try {
+                String id_servico = "" + jTablePesquisa.getValueAt(jTablePesquisa.getSelectedRow(), 0);
+
+                connServicos.conexao();
+                connServicos.executaSQL("SELECT * FROM servicos WHERE id ='" + id_servico + "'");
+                connServicos.rs.first();
+
+                jTextServicoId.setText(connServicos.rs.getString("id"));
+                jTextServico.setText(connServicos.rs.getString("nome"));
+
+            } catch (SQLException ex) {
+                Logger.getLogger(VendasView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            connServicos.desconecta();
+        }    
     }//GEN-LAST:event_jTablePesquisaMouseClicked
 
     private void btnPesquisaProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaProdutoActionPerformed
+        flag = 2;
+        
         conecta.conexao();
         preencherTabelaPesquisaProduto("SELECT * FROM produtos WHERE nome LIKE '%" + jTextProduto.getText() + "%'");
         conecta.desconecta();
     }//GEN-LAST:event_btnPesquisaProdutoActionPerformed
+
+    private void btnPesquisaServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaServicoActionPerformed
+        flag = 3;
+        
+        conecta.conexao();
+        preencherTabelaPesquisaServico("SELECT * FROM servicos WHERE nome LIKE '%" + jTextServico.getText() + "%'");
+        conecta.desconecta();
+    }//GEN-LAST:event_btnPesquisaServicoActionPerformed
 
     public void preencherTabelaPesquisaCliente(String SQL){
         ArrayList dados = new ArrayList();
@@ -867,6 +916,42 @@ public class VendasView extends javax.swing.JFrame {
             conecta.rs.first();
             do {
                 dados.add(new Object[]{conecta.rs.getInt("id"), conecta.rs.getString("nome"), conecta.rs.getString("fabricante"), conecta.rs.getString("rede"), conecta.rs.getString("cor")});
+        } while(conecta.rs.next());
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não existem registros com os termos pesquisados.\nERRO: "+ ex);
+        }
+
+        TabelasModel modelo = new TabelasModel(dados, Colunas);
+
+        jTablePesquisa.setModel(modelo);
+        jTablePesquisa.getColumnModel().getColumn(0).setPreferredWidth(60);
+        jTablePesquisa.getColumnModel().getColumn(0).setResizable(false);
+        jTablePesquisa.getColumnModel().getColumn(1).setPreferredWidth(330);
+        jTablePesquisa.getColumnModel().getColumn(1).setResizable(false);
+        jTablePesquisa.getColumnModel().getColumn(2).setPreferredWidth(130);
+        jTablePesquisa.getColumnModel().getColumn(2).setResizable(false);
+        jTablePesquisa.getColumnModel().getColumn(3).setPreferredWidth(130);
+        jTablePesquisa.getColumnModel().getColumn(3).setResizable(false);
+        jTablePesquisa.getColumnModel().getColumn(4).setPreferredWidth(182);
+        jTablePesquisa.getColumnModel().getColumn(4).setResizable(false);
+        jTablePesquisa.getTableHeader().setReorderingAllowed(false);
+        jTablePesquisa.setAutoResizeMode(jTablePesquisa.AUTO_RESIZE_OFF);
+        jTablePesquisa.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        conecta.desconecta();
+    }
+    
+    public void preencherTabelaPesquisaServico(String SQL){
+        ArrayList dados = new ArrayList();
+
+        String[] Colunas = new String[]{"Código", "Nome", "Operadora", "Valor", "Status"};
+        conecta.executaSQL(SQL);
+
+        try {
+            conecta.rs.first();
+            do {
+                dados.add(new Object[]{conecta.rs.getInt("id"), conecta.rs.getString("nome"), conecta.rs.getString("operadora"), conecta.rs.getString("valor"), conecta.rs.getString("status")});
         } while(conecta.rs.next());
 
         } catch (SQLException ex) {
