@@ -228,6 +228,34 @@ public class VendasModel {
     }
 
     /**
+     * @return the operadora_port_movel
+     */
+    public String getOperadora_port_movel() {
+        return operadora_port_movel;
+    }
+
+    /**
+     * @param operadora_port_movel the operadora_port_movel to set
+     */
+    public void setOperadora_port_movel(String operadora_port_movel) {
+        this.operadora_port_movel = operadora_port_movel;
+    }
+
+    /**
+     * @return the operadora_port_fixo
+     */
+    public String getOperadora_port_fixo() {
+        return operadora_port_fixo;
+    }
+
+    /**
+     * @param operadora_port_fixo the operadora_port_fixo to set
+     */
+    public void setOperadora_port_fixo(String operadora_port_fixo) {
+        this.operadora_port_fixo = operadora_port_fixo;
+    }
+
+    /**
      * @return the dt_port_fixo
      */
     public String getDt_port_fixo() {
@@ -311,31 +339,5 @@ public class VendasModel {
         this.created = created;
     }
 
-    /**
-     * @return the operadora_port_fixo
-     */
-    public String getOperadora_port_fixo() {
-        return operadora_port_fixo;
-    }
-
-    /**
-     * @param operadora_port_fixo the operadora_port_fixo to set
-     */
-    public void setOperadora_port_fixo(String operadora_port_fixo) {
-        this.operadora_port_fixo = operadora_port_fixo;
-    }
-
-    /**
-     * @return the operadora_port_movel
-     */
-    public String getOperadora_port_movel() {
-        return operadora_port_movel;
-    }
-
-    /**
-     * @param operadora_port_movel the operadora_port_movel to set
-     */
-    public void setOperadora_port_movel(String operadora_port_movel) {
-        this.operadora_port_movel = operadora_port_movel;
-    }
+    
 }
