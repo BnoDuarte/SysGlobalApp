@@ -212,6 +212,11 @@ public class VendasView extends javax.swing.JFrame {
         lblVendedor.setText("Vendedor");
 
         jCBoxVendedor.setEnabled(false);
+        jCBoxVendedor.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jCBoxVendedorFocusLost(evt);
+            }
+        });
 
         btnPesquisaCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/search16px.png"))); // NOI18N
         btnPesquisaCliente.setEnabled(false);
@@ -934,6 +939,10 @@ public class VendasView extends javax.swing.JFrame {
     private void jTableItensVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableItensVendaMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTableItensVendaMouseClicked
+
+    private void jCBoxVendedorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jCBoxVendedorFocusLost
+        
+    }//GEN-LAST:event_jCBoxVendedorFocusLost
 
     public void preencherTabelaPesquisaCliente(String SQL){
         ArrayList dados = new ArrayList();
