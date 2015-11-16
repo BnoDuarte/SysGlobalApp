@@ -36,9 +36,9 @@ public class VendasController {
             pst.setString(12, mod.getNtc_movel());
             pst.setString(13, mod.getNtc_movel_portado());
             pst.setString(14, mod.getOperadora_portada());
-            pst.setDate(15, mod.getDt_port_fixo());
-            pst.setDate(16, mod.getDt_port_movel());
-            pst.setDate(17, mod.getDt_venda());
+            pst.setString(15, mod.getDt_port_fixo());
+            pst.setString(16, mod.getDt_port_movel());
+            pst.setString(17, mod.getDt_venda());
             pst.setString(18, mod.getProtocolo_contrato());
             pst.setString(19, mod.getStatus());
             pst.execute();      
