@@ -1,8 +1,6 @@
 
 package models;
 
-import java.sql.Date;
-
 /**
  *
  * @author Bruno Duarte
@@ -25,12 +23,12 @@ public class VendasModel {
     private String ntc_movel;
     private String ntc_movel_portado;
     private String operadora_portada;
-    private Date dt_port_fixo;
-    private Date dt_port_movel;
-    private Date dt_venda;
+    private String dt_port_fixo;
+    private String dt_port_movel;
+    private String dt_venda;
     private String protocolo_contrato;
     private String status;
-    private Date created;
+    private String created;
 
     /**
      * @return the id
@@ -245,42 +243,42 @@ public class VendasModel {
     /**
      * @return the dt_port_fixo
      */
-    public Date getDt_port_fixo() {
+    public String getDt_port_fixo() {
         return dt_port_fixo;
     }
 
     /**
      * @param dt_port_fixo the dt_port_fixo to set
      */
-    public void setDt_port_fixo(Date dt_port_fixo) {
+    public void setDt_port_fixo(String dt_port_fixo) {
         this.dt_port_fixo = dt_port_fixo;
     }
 
     /**
      * @return the dt_port_movel
      */
-    public Date getDt_port_movel() {
+    public String getDt_port_movel() {
         return dt_port_movel;
     }
 
     /**
      * @param dt_port_movel the dt_port_movel to set
      */
-    public void setDt_port_movel(Date dt_port_movel) {
+    public void setDt_port_movel(String dt_port_movel) {
         this.dt_port_movel = dt_port_movel;
     }
 
     /**
      * @return the dt_venda
      */
-    public Date getDt_venda() {
+    public String getDt_venda() {
         return dt_venda;
     }
 
     /**
      * @param dt_venda the dt_venda to set
      */
-    public void setDt_venda(Date dt_venda) {
+    public void setDt_venda(String dt_venda) {
         this.dt_venda = dt_venda;
     }
 
@@ -315,14 +313,14 @@ public class VendasModel {
     /**
      * @return the created
      */
-    public Date getCreated() {
+    public String getCreated() {
         return created;
     }
 
     /**
      * @param created the created to set
      */
-    public void setCreated(Date created) {
+    public void setCreated(String created) {
         this.created = created;
     }
 }
