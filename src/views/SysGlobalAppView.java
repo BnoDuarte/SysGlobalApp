@@ -36,6 +36,7 @@ public class SysGlobalAppView extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuComercial = new javax.swing.JMenu();
         jMenuClientes = new javax.swing.JMenuItem();
+        jMenuVendas = new javax.swing.JMenuItem();
         jMenuOperacional = new javax.swing.JMenu();
         jMenuFornecedores = new javax.swing.JMenuItem();
         jMenuProdutos = new javax.swing.JMenuItem();
@@ -70,6 +71,14 @@ public class SysGlobalAppView extends javax.swing.JFrame {
             }
         });
         jMenuComercial.add(jMenuClientes);
+
+        jMenuVendas.setText("Vendas");
+        jMenuVendas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuVendasActionPerformed(evt);
+            }
+        });
+        jMenuComercial.add(jMenuVendas);
 
         jMenuBar1.add(jMenuComercial);
 
@@ -223,6 +232,11 @@ public class SysGlobalAppView extends javax.swing.JFrame {
         clientes.setVisible(true);
     }//GEN-LAST:event_jMenuClientesActionPerformed
 
+    private void jMenuVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuVendasActionPerformed
+        VendasView vendas = new VendasView();
+        vendas.setVisible(true);
+    }//GEN-LAST:event_jMenuVendasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -275,5 +289,6 @@ public class SysGlobalAppView extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuProdutos;
     private javax.swing.JMenu jMenuRH;
     private javax.swing.JMenuItem jMenuServiços;
+    private javax.swing.JMenuItem jMenuVendas;
     // End of variables declaration//GEN-END:variables
 }
