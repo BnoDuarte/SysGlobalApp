@@ -31,6 +31,7 @@ public class VendasView extends javax.swing.JFrame {
     ConectaBanco connClientes = new ConectaBanco();
     ConectaBanco connProdutos = new ConectaBanco();
     ConectaBanco connServicos = new ConectaBanco();
+    ConectaBanco connFuncionarios = new ConectaBanco();
     
     VendasModel mod = new VendasModel();
     VendasController control = new VendasController();
@@ -42,6 +43,13 @@ public class VendasView extends javax.swing.JFrame {
      */
     public VendasView() {
         initComponents();
+        
+        lblCampoObrigCliente.setVisible(false);
+        lblCampoObrigDtVenda.setVisible(false);
+        lblCampoObrigFormaPagto.setVisible(false);
+        lblCampoObrigNatVenda.setVisible(false);
+        lblCampoObrigTpVenda.setVisible(false);
+        lblCampoObrigVendedor.setVisible(false);
         
         try {
             MaskFormatter mask = new MaskFormatter("##/##/####");
@@ -68,6 +76,17 @@ public class VendasView extends javax.swing.JFrame {
         
         this.setIconImage(new ImageIcon(getClass().getResource("../imagens/icones/global2-32px.png")).getImage());
         
+        connFuncionarios.conexao();
+        connFuncionarios.executaSQL("SELECT * FROM funcionarios ORDER BY nome");
+        jCBoxVendedor.removeAllItems();
+        try {
+            while(connFuncionarios.rs.next()) {
+                jCBoxVendedor.addItem(connFuncionarios.rs.getString("nome")+" "+connFuncionarios.rs.getString("sobrenome"));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Erro ao preencher lista de Vendedores:" + ex);
+        }
+        
     }
 
     /**
@@ -86,13 +105,8 @@ public class VendasView extends javax.swing.JFrame {
         lblDataVenda = new javax.swing.JLabel();
         lblFormaPagto = new javax.swing.JLabel();
         jCBoxFormaPagto = new javax.swing.JComboBox();
-        jPanel2 = new javax.swing.JPanel();
-        lblCliente = new javax.swing.JLabel();
-        jTextCliente = new javax.swing.JTextField();
-        lblVendedor = new javax.swing.JLabel();
-        jCBoxVendedor = new javax.swing.JComboBox();
-        btnPesquisaCliente = new javax.swing.JButton();
-        jTextClienteId = new javax.swing.JTextField();
+        lblCampoObrigDtVenda = new javax.swing.JLabel();
+        lblCampoObrigFormaPagto = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jCBoxNaturezaVenda = new javax.swing.JComboBox();
         lblNaturezaVenda = new javax.swing.JLabel();
@@ -100,6 +114,8 @@ public class VendasView extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jCBoxTipoVenda = new javax.swing.JComboBox();
         jCheckBoxPortFixo = new javax.swing.JCheckBox();
+        lblCampoObrigNatVenda = new javax.swing.JLabel();
+        lblCampoObrigTpVenda = new javax.swing.JLabel();
         lblProduto = new javax.swing.JLabel();
         btnPesquisaProduto = new javax.swing.JButton();
         lblPesquisaVenda = new javax.swing.JLabel();
@@ -128,20 +144,31 @@ public class VendasView extends javax.swing.JFrame {
         jFormattedNtcMovelHab = new javax.swing.JFormattedTextField();
         jFormattedNtcPortado = new javax.swing.JFormattedTextField();
         lblNtcPortado = new javax.swing.JLabel();
-        jCBoxOperadoraPortada = new javax.swing.JComboBox();
-        lblOperadoraPortada = new javax.swing.JLabel();
+        jCBoxOperadoraPortMovel = new javax.swing.JComboBox();
+        lblOperadoraOrigemMovel = new javax.swing.JLabel();
         jFormattedDtPortMovel = new javax.swing.JFormattedTextField();
         lblDtPortMovel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jFormattedNtcFixoHab = new javax.swing.JFormattedTextField();
         lblDtPortFixo = new javax.swing.JLabel();
         jFormattedDtPortFixo = new javax.swing.JFormattedTextField();
+        jCBoxOperadoraPortFixo = new javax.swing.JComboBox();
+        lblOperadoraOrigemFixo = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTablePesquisa = new javax.swing.JTable();
         jTextServicoId = new javax.swing.JTextField();
         jTextProdutoId = new javax.swing.JTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTableItensVenda = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        lblCliente = new javax.swing.JLabel();
+        jTextCliente = new javax.swing.JTextField();
+        lblVendedor = new javax.swing.JLabel();
+        jCBoxVendedor = new javax.swing.JComboBox();
+        btnPesquisaCliente = new javax.swing.JButton();
+        jTextClienteId = new javax.swing.JTextField();
+        lblCampoObrigCliente = new javax.swing.JLabel();
+        lblCampoObrigVendedor = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Vendas");
@@ -154,6 +181,11 @@ public class VendasView extends javax.swing.JFrame {
         jTextCodigo.setEnabled(false);
 
         jFormattedDataVenda.setEnabled(false);
+        jFormattedDataVenda.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jFormattedDataVendaFocusLost(evt);
+            }
+        });
 
         lblDataVenda.setText("Data da Venda");
 
@@ -161,6 +193,12 @@ public class VendasView extends javax.swing.JFrame {
 
         jCBoxFormaPagto.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Dinheiro", "Cheque", "Cartão - Crédito", "Cartão - Débito" }));
         jCBoxFormaPagto.setEnabled(false);
+
+        lblCampoObrigDtVenda.setForeground(new java.awt.Color(255, 0, 0));
+        lblCampoObrigDtVenda.setText("*");
+
+        lblCampoObrigFormaPagto.setForeground(new java.awt.Color(255, 0, 0));
+        lblCampoObrigFormaPagto.setText("*");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -178,9 +216,15 @@ public class VendasView extends javax.swing.JFrame {
                                     .addComponent(lblCodigo))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblDataVenda)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(lblDataVenda)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lblCampoObrigDtVenda))
                                     .addComponent(jFormattedDataVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(lblFormaPagto))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblFormaPagto)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblCampoObrigFormaPagto, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -190,80 +234,18 @@ public class VendasView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCodigo)
-                    .addComponent(lblDataVenda))
+                    .addComponent(lblDataVenda)
+                    .addComponent(lblCampoObrigDtVenda))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jFormattedDataVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblFormaPagto)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFormaPagto)
+                    .addComponent(lblCampoObrigFormaPagto))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCBoxFormaPagto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel2.setEnabled(false);
-
-        lblCliente.setText("Nome do Cliente");
-
-        jTextCliente.setEnabled(false);
-
-        lblVendedor.setText("Vendedor");
-
-        jCBoxVendedor.setEnabled(false);
-        jCBoxVendedor.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jCBoxVendedorFocusLost(evt);
-            }
-        });
-
-        btnPesquisaCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/search16px.png"))); // NOI18N
-        btnPesquisaCliente.setEnabled(false);
-        btnPesquisaCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPesquisaClienteActionPerformed(evt);
-            }
-        });
-
-        jTextClienteId.setEnabled(false);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCBoxVendedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblVendedor)
-                            .addComponent(lblCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 206, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jTextClienteId, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextCliente)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPesquisaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblCliente)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextClienteId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnPesquisaCliente))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblVendedor)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCBoxVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -272,6 +254,11 @@ public class VendasView extends javax.swing.JFrame {
 
         jCBoxNaturezaVenda.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Ativação / ND", "Migração Pré-Pós", "Upgrade" }));
         jCBoxNaturezaVenda.setEnabled(false);
+        jCBoxNaturezaVenda.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jCBoxNaturezaVendaFocusLost(evt);
+            }
+        });
 
         lblNaturezaVenda.setText("Natureza da Venda");
 
@@ -287,6 +274,11 @@ public class VendasView extends javax.swing.JFrame {
 
         jCBoxTipoVenda.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Com Aparelho", "Sem Aparelho" }));
         jCBoxTipoVenda.setEnabled(false);
+        jCBoxTipoVenda.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jCBoxTipoVendaFocusLost(evt);
+            }
+        });
 
         jCheckBoxPortFixo.setText("Port Fixo?");
         jCheckBoxPortFixo.setEnabled(false);
@@ -295,6 +287,12 @@ public class VendasView extends javax.swing.JFrame {
                 jCheckBoxPortFixoActionPerformed(evt);
             }
         });
+
+        lblCampoObrigNatVenda.setForeground(new java.awt.Color(255, 0, 0));
+        lblCampoObrigNatVenda.setText("*");
+
+        lblCampoObrigTpVenda.setForeground(new java.awt.Color(255, 0, 0));
+        lblCampoObrigTpVenda.setText("*");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -307,8 +305,14 @@ public class VendasView extends javax.swing.JFrame {
                     .addComponent(jCBoxNaturezaVenda, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblNaturezaVenda)
-                            .addComponent(jLabel7))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblCampoObrigTpVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(lblNaturezaVenda)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblCampoObrigNatVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -320,13 +324,17 @@ public class VendasView extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(11, 11, 11)
-                .addComponent(lblNaturezaVenda)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNaturezaVenda)
+                    .addComponent(lblCampoObrigNatVenda))
                 .addGap(5, 5, 5)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCBoxNaturezaVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jCheckBoxPortMovel))
                 .addGap(4, 4, 4)
-                .addComponent(jLabel7)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(lblCampoObrigTpVenda))
                 .addGap(5, 5, 5)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCBoxTipoVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -495,7 +503,7 @@ public class VendasView extends javax.swing.JFrame {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        lblNtcHabilitado.setText("NTC Móvel Habilitado");
+        lblNtcHabilitado.setText("NTC Móvel");
 
         jFormattedNtcMovelHab.setEnabled(false);
 
@@ -503,10 +511,10 @@ public class VendasView extends javax.swing.JFrame {
 
         lblNtcPortado.setText("NTC Móvel Portado");
 
-        jCBoxOperadoraPortada.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Vivo", "Tim", "Oi", "Sercomtel", "GVT" }));
-        jCBoxOperadoraPortada.setEnabled(false);
+        jCBoxOperadoraPortMovel.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Vivo", "Tim", "Oi", "Sercomtel", "GVT" }));
+        jCBoxOperadoraPortMovel.setEnabled(false);
 
-        lblOperadoraPortada.setText("Operadora Portada");
+        lblOperadoraOrigemMovel.setText("Operadora Origem Móvel");
 
         jFormattedDtPortMovel.setEnabled(false);
 
@@ -519,6 +527,11 @@ public class VendasView extends javax.swing.JFrame {
         lblDtPortFixo.setText("Data Portabilidade Fixo");
 
         jFormattedDtPortFixo.setEnabled(false);
+
+        jCBoxOperadoraPortFixo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Vivo", "Tim", "Oi", "Sercomtel", "GVT" }));
+        jCBoxOperadoraPortFixo.setEnabled(false);
+
+        lblOperadoraOrigemFixo.setText("Operadora Origem Fixo");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -534,19 +547,23 @@ public class VendasView extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jFormattedNtcPortado, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblNtcPortado))
-                        .addGap(18, 18, 18)
+                            .addComponent(lblNtcPortado)))
+                    .addComponent(jLabel2)
+                    .addComponent(jFormattedNtcFixoHab, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCBoxOperadoraPortada, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblOperadoraPortada))
+                            .addComponent(jCBoxOperadoraPortMovel, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblOperadoraOrigemMovel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jFormattedDtPortMovel, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblDtPortMovel)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jFormattedNtcFixoHab, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jCBoxOperadoraPortFixo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblOperadoraOrigemFixo))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jFormattedDtPortFixo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -560,24 +577,29 @@ public class VendasView extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNtcHabilitado)
                     .addComponent(lblNtcPortado)
-                    .addComponent(lblOperadoraPortada)
+                    .addComponent(lblOperadoraOrigemMovel)
                     .addComponent(lblDtPortMovel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jFormattedNtcMovelHab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jFormattedNtcPortado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCBoxOperadoraPortada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCBoxOperadoraPortMovel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jFormattedDtPortMovel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel5Layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jFormattedNtcFixoHab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel5Layout.createSequentialGroup()
+                            .addComponent(lblDtPortFixo)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jFormattedDtPortFixo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
+                        .addComponent(lblOperadoraOrigemFixo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jFormattedNtcFixoHab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(lblDtPortFixo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jFormattedDtPortFixo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jCBoxOperadoraPortFixo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -621,6 +643,90 @@ public class VendasView extends javax.swing.JFrame {
         });
         jScrollPane4.setViewportView(jTableItensVenda);
 
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel2.setEnabled(false);
+
+        lblCliente.setText("Nome do Cliente");
+
+        jTextCliente.setEnabled(false);
+
+        lblVendedor.setText("Vendedor");
+
+        jCBoxVendedor.setEnabled(false);
+        jCBoxVendedor.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jCBoxVendedorFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jCBoxVendedorFocusLost(evt);
+            }
+        });
+
+        btnPesquisaCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/search16px.png"))); // NOI18N
+        btnPesquisaCliente.setEnabled(false);
+        btnPesquisaCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisaClienteActionPerformed(evt);
+            }
+        });
+
+        jTextClienteId.setEnabled(false);
+
+        lblCampoObrigCliente.setForeground(new java.awt.Color(255, 0, 0));
+        lblCampoObrigCliente.setText("*");
+
+        lblCampoObrigVendedor.setForeground(new java.awt.Color(255, 0, 0));
+        lblCampoObrigVendedor.setText("*");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jCBoxVendedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jTextClienteId, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnPesquisaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(lblVendedor)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblCampoObrigVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(lblCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblCampoObrigCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCliente)
+                    .addComponent(lblCampoObrigCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextClienteId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnPesquisaCliente))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblVendedor)
+                    .addComponent(lblCampoObrigVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCBoxVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -633,9 +739,9 @@ public class VendasView extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnNovo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -687,11 +793,12 @@ public class VendasView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -718,7 +825,7 @@ public class VendasView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovo)
@@ -727,21 +834,21 @@ public class VendasView extends javax.swing.JFrame {
                     .addComponent(btnExcluir)
                     .addComponent(btnSair)
                     .addComponent(btnCancelar))
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
-        setSize(new java.awt.Dimension(866, 689));
+        setSize(new java.awt.Dimension(866, 680));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jCheckBoxPortMovelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxPortMovelActionPerformed
         if(jCheckBoxPortMovel.isSelected()){
             jFormattedNtcPortado.setEnabled(true);
-            jCBoxOperadoraPortada.setEnabled(true);
+            jCBoxOperadoraPortMovel.setEnabled(true);
             jFormattedDtPortMovel.setEnabled(true);
         } else {
             jFormattedNtcPortado.setEnabled(!true);
-            jCBoxOperadoraPortada.setEnabled(!true);
+            jCBoxOperadoraPortMovel.setEnabled(!true);
             jFormattedDtPortMovel.setEnabled(!true);
         }
     }//GEN-LAST:event_jCheckBoxPortMovelActionPerformed
@@ -750,16 +857,16 @@ public class VendasView extends javax.swing.JFrame {
         jTextCodigo.setEnabled(!true);
         jFormattedDataVenda.setEnabled(true);
         jCBoxFormaPagto.setEnabled(true);
-        jCBoxNaturezaVenda.setEnabled(true);
-        jCheckBoxPortMovel.setEnabled(true);
-        jCheckBoxPortFixo.setEnabled(true);
-        jCBoxTipoVenda.setEnabled(true);
+        jCBoxNaturezaVenda.setEnabled(!true);
+        jCheckBoxPortMovel.setEnabled(!true);
+        jCheckBoxPortFixo.setEnabled(!true);
+        jCBoxTipoVenda.setEnabled(!true);
         jTextCliente.setEnabled(true);
         jCBoxVendedor.setEnabled(true);
-        jFormattedNtcMovelHab.setEnabled(true);
-        jFormattedNtcFixoHab.setEnabled(true);
-        jTextProduto.setEnabled(true);
-        jTextServico.setEnabled(true);
+        jFormattedNtcMovelHab.setEnabled(!true);
+        jFormattedNtcFixoHab.setEnabled(!true);
+        jTextProduto.setEnabled(!true);
+        jTextServico.setEnabled(!true);
         jTablePesquisa.setEnabled(true);
         jTableItensVenda.setEnabled(true);
         
@@ -769,11 +876,12 @@ public class VendasView extends javax.swing.JFrame {
         btnSalvar.setEnabled(true);
         btnNovo.setEnabled(false);
         btnPesquisaCliente.setEnabled(true);
-        btnPesquisaProduto.setEnabled(true);
-        btnPesquisaServico.setEnabled(true);
-        btnAddProduto.setEnabled(true);
-        btnAddServico.setEnabled(true);
- 
+        btnPesquisaProduto.setEnabled(!true);
+        btnPesquisaServico.setEnabled(!true);
+        btnAddProduto.setEnabled(!true);
+        btnAddServico.setEnabled(!true);
+        
+        jFormattedDataVenda.requestFocus();
     }//GEN-LAST:event_btnNovoActionPerformed
     
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
@@ -814,6 +922,7 @@ public class VendasView extends javax.swing.JFrame {
         jCBoxFormaPagto.setEnabled(!true);
         jCBoxNaturezaVenda.setEnabled(!true);
         jCheckBoxPortMovel.setEnabled(!true);
+        jCheckBoxPortFixo.setEnabled(!true);
         jCBoxTipoVenda.setEnabled(!true);
         jTextCliente.setEnabled(!true);
         jCBoxVendedor.setEnabled(!true);
@@ -871,6 +980,8 @@ public class VendasView extends javax.swing.JFrame {
 
                 jTextClienteId.setText(connClientes.rs.getString("id"));
                 jTextCliente.setText(connClientes.rs.getString("nome") + " " + connClientes.rs.getString("sobrenome"));
+                
+                jTextCliente.requestFocus();
 
             } catch (SQLException ex) {
                 Logger.getLogger(VendasView.class.getName()).log(Level.SEVERE, null, ex);
@@ -888,6 +999,8 @@ public class VendasView extends javax.swing.JFrame {
                 jTextProdutoId.setText(connProdutos.rs.getString("id"));
                 jTextProduto.setText(connProdutos.rs.getString("nome"));
 
+                jTextProduto.requestFocus();
+                
             } catch (SQLException ex) {
                 Logger.getLogger(VendasView.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -902,6 +1015,8 @@ public class VendasView extends javax.swing.JFrame {
 
                 jTextServicoId.setText(connServicos.rs.getString("id"));
                 jTextServico.setText(connServicos.rs.getString("nome"));
+                
+                jTextServico.requestFocus();
 
             } catch (SQLException ex) {
                 Logger.getLogger(VendasView.class.getName()).log(Level.SEVERE, null, ex);
@@ -929,9 +1044,11 @@ public class VendasView extends javax.swing.JFrame {
     private void jCheckBoxPortFixoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxPortFixoActionPerformed
         if (jCheckBoxPortFixo.isSelected()) {
             jFormattedNtcFixoHab.setEnabled(true);
+            jCBoxOperadoraPortFixo.setEnabled(true);
             jFormattedDtPortFixo.setEnabled(true);
         } else {
             jFormattedNtcFixoHab.setEnabled(!true);
+            jCBoxOperadoraPortFixo.setEnabled(!true);
             jFormattedDtPortFixo.setEnabled(!true);
         }
     }//GEN-LAST:event_jCheckBoxPortFixoActionPerformed
@@ -941,8 +1058,81 @@ public class VendasView extends javax.swing.JFrame {
     }//GEN-LAST:event_jTableItensVendaMouseClicked
 
     private void jCBoxVendedorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jCBoxVendedorFocusLost
+        // Faz a validação do campo vendedor e ativa a próxima sequência de dados para preenchimento
+        if(jCBoxVendedor.getSelectedItem().toString().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Favor selecionar um Vendedor.");
+            jCBoxVendedor.requestFocus();
+        } else {
+            jCBoxNaturezaVenda.setEnabled(true);
+            jCheckBoxPortMovel.setEnabled(true);
+            jCheckBoxPortFixo.setEnabled(true);
+            jCBoxTipoVenda.setEnabled(true);
+        }
         
+        try {
+            mod.setDt_venda(jFormattedDataVenda.getText());
+
+            connClientes.conexao();
+            connClientes.executaSQL("SELECT * FROM clientes WHERE id = '"+jTextClienteId.getText()+ "'");
+            connClientes.rs.first();
+            mod.setCliente_id(connClientes.rs.getInt("id"));
+            connClientes.desconecta();
+            
+            connFuncionarios.conexao();
+            connFuncionarios.executaSQL("SELECT * FROM funcionarios WHERE nome+' '+sobrenome = '" + jCBoxVendedor.getSelectedItem() + "'");
+            connFuncionarios.rs.first();
+            mod.setFuncionario_id(connFuncionarios.rs.getInt("id"));
+            connFuncionarios.desconecta();
+            
+            control.Inserir(mod);
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Não foi possível salvar os dados.\nERRO: "+ex);
+        }
     }//GEN-LAST:event_jCBoxVendedorFocusLost
+
+    private void jFormattedDataVendaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedDataVendaFocusLost
+        // Desmembra a Data ****** .trim() = retirar espaços em branco
+        String dia = jFormattedDataVenda.getText().substring(0,2).trim();
+        String mes = jFormattedDataVenda.getText().substring(3,5).trim();
+        String ano = jFormattedDataVenda.getText().substring(6).trim();
+        
+        // Faz a validação do Campo Data da Venda 
+        if(dia.length() <= 0 || Integer.parseInt(dia) > 31 || Integer.parseInt(mes) > 12 || Integer.parseInt(ano) < 1900) {
+            lblCampoObrigDtVenda.setVisible(true);
+            lblCampoObrigDtVenda.setEnabled(true);
+            
+            JOptionPane.showMessageDialog(null, "Favor preencher uma Data de Venda válida.");
+            
+            jFormattedDataVenda.requestFocus();
+        }
+    }//GEN-LAST:event_jFormattedDataVendaFocusLost
+
+    private void jCBoxVendedorFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jCBoxVendedorFocusGained
+        // Faz a validação do campo cliente
+        if(jTextCliente.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Favor selecionar o cliente.");
+            jTextCliente.requestFocus();
+        }
+    }//GEN-LAST:event_jCBoxVendedorFocusGained
+
+    private void jCBoxNaturezaVendaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jCBoxNaturezaVendaFocusLost
+        if(jCBoxNaturezaVenda.getSelectedItem().toString().isEmpty()){
+            jFormattedNtcMovelHab.setEnabled(false);
+            jFormattedNtcFixoHab.setEnabled(false);
+            jCBoxNaturezaVenda.requestFocus();
+        } else {
+            jFormattedNtcMovelHab.setEnabled(true);
+            jFormattedNtcFixoHab.setEnabled(true);
+        }
+    }//GEN-LAST:event_jCBoxNaturezaVendaFocusLost
+
+    private void jCBoxTipoVendaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jCBoxTipoVendaFocusLost
+        if(jCBoxTipoVenda.getSelectedItem().toString().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Selecione o Tipo da Venda.");
+            jCBoxTipoVenda.requestFocus();
+        }
+    }//GEN-LAST:event_jCBoxTipoVendaFocusLost
 
     public void preencherTabelaPesquisaCliente(String SQL){
         ArrayList dados = new ArrayList();
@@ -1101,7 +1291,8 @@ public class VendasView extends javax.swing.JFrame {
     private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox jCBoxFormaPagto;
     private javax.swing.JComboBox jCBoxNaturezaVenda;
-    private javax.swing.JComboBox jCBoxOperadoraPortada;
+    private javax.swing.JComboBox jCBoxOperadoraPortFixo;
+    private javax.swing.JComboBox jCBoxOperadoraPortMovel;
     private javax.swing.JComboBox jCBoxTipoVenda;
     private javax.swing.JComboBox jCBoxVendedor;
     private javax.swing.JCheckBox jCheckBoxPortFixo;
@@ -1133,6 +1324,12 @@ public class VendasView extends javax.swing.JFrame {
     private javax.swing.JTextField jTextSubProdutos;
     private javax.swing.JTextField jTextSubServicos;
     private javax.swing.JTextField jTextTotal;
+    private javax.swing.JLabel lblCampoObrigCliente;
+    private javax.swing.JLabel lblCampoObrigDtVenda;
+    private javax.swing.JLabel lblCampoObrigFormaPagto;
+    private javax.swing.JLabel lblCampoObrigNatVenda;
+    private javax.swing.JLabel lblCampoObrigTpVenda;
+    private javax.swing.JLabel lblCampoObrigVendedor;
     private javax.swing.JLabel lblCliente;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblDataVenda;
@@ -1143,7 +1340,8 @@ public class VendasView extends javax.swing.JFrame {
     private javax.swing.JLabel lblNaturezaVenda;
     private javax.swing.JLabel lblNtcHabilitado;
     private javax.swing.JLabel lblNtcPortado;
-    private javax.swing.JLabel lblOperadoraPortada;
+    private javax.swing.JLabel lblOperadoraOrigemFixo;
+    private javax.swing.JLabel lblOperadoraOrigemMovel;
     private javax.swing.JLabel lblPesquisaVenda;
     private javax.swing.JLabel lblProduto;
     private javax.swing.JLabel lblServico;
