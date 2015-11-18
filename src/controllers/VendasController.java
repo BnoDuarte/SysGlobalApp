@@ -17,6 +17,8 @@ public class VendasController {
     ConectaBanco connVendas = new ConectaBanco();
     VendasModel mod = new VendasModel();
     
+    String categProduto;
+    
     public void abrirVenda(VendasModel mod) {
         connVendas.conexao();
         
@@ -26,8 +28,8 @@ public class VendasController {
             pst.setInt(1, mod.getFuncionario_id());
             pst.setInt(2, mod.getCliente_id());
             pst.setString(3, mod.getFormapagto());
-            pst.setInt(4, mod.getIccid());
-            pst.setInt(5, mod.getImei());
+            pst.setString(4, mod.getIccid());
+            pst.setString(5, mod.getImei());
             pst.setString(6, mod.getTipo_venda());
             pst.setString(7, mod.getPort_movel());
             pst.setString(8, mod.getPort_fixo());
@@ -65,8 +67,8 @@ public class VendasController {
             PreparedStatement pst = connVendas.conn.prepareStatement("UPDATE vendas SET formapagto = ?, iccid = ?, imei = ?, tipo_venda = ?, port_movel = ?, port_fixo = ?, ntc_fixo = ?, ntc_movel = ?, protocolo_contrato = ? WHERE id = ?");
             
             pst.setString(1, mod.getFormapagto());
-            pst.setInt(2, mod.getIccid());
-            pst.setInt(3, mod.getImei());
+            pst.setString(2, mod.getIccid());
+            pst.setString(3, mod.getImei());
             pst.setString(4, mod.getTipo_venda());
             pst.setString(5, mod.getPort_movel());
             pst.setString(6, mod.getPort_fixo());
@@ -92,8 +94,8 @@ public class VendasController {
             PreparedStatement pst = connVendas.conn.prepareStatement("UPDATE vendas SET formapagto = ?, iccid = ?, imei = ?, tipo_venda = ?, port_movel = ?, port_fixo = ?, ntc_fixo = ?, ntc_movel = ?, protocolo_contrato = ?, dt_port_fixo = ?, operadora_port_fixo = ? WHERE id = ?");
             
             pst.setString(1, mod.getFormapagto());
-            pst.setInt(2, mod.getIccid());
-            pst.setInt(3, mod.getImei());
+            pst.setString(2, mod.getIccid());
+            pst.setString(3, mod.getImei());
             pst.setString(4, mod.getTipo_venda());
             pst.setString(5, mod.getPort_movel());
             pst.setString(6, mod.getPort_fixo());
@@ -127,8 +129,8 @@ public class VendasController {
             PreparedStatement pst = connVendas.conn.prepareStatement("UPDATE vendas SET formapagto = ?, iccid = ?, imei = ?, tipo_venda = ?, port_movel = ?, port_fixo = ?, ntc_fixo = ?, ntc_movel = ?, protocolo_contrato = ?, ntc_movel_portado = ?, operadora_port_movel = ?, dt_port_movel = ? WHERE id = ?");
             
             pst.setString(1, mod.getFormapagto());
-            pst.setInt(2, mod.getIccid());
-            pst.setInt(3, mod.getImei());
+            pst.setString(2, mod.getIccid());
+            pst.setString(3, mod.getImei());
             pst.setString(4, mod.getTipo_venda());
             pst.setString(5, mod.getPort_movel());
             pst.setString(6, mod.getPort_fixo());
@@ -165,8 +167,8 @@ public class VendasController {
             pst.setInt(1, mod.getFuncionario_id());
             pst.setInt(2, mod.getCliente_id());
             pst.setString(3, mod.getFormapagto());
-            pst.setInt(4, mod.getIccid());
-            pst.setInt(5, mod.getImei());
+            pst.setString(4, mod.getIccid());
+            pst.setString(5, mod.getImei());
             pst.setString(6, mod.getTipo_venda());
             pst.setString(7, mod.getPort_movel());
             pst.setString(8, mod.getPort_fixo());
@@ -235,5 +237,19 @@ public class VendasController {
             connVendas.desconecta();
             JOptionPane.showMessageDialog(null, "Erro ao adicionar o Serviço."+ ex);
         }
+    }
+    
+    public String buscaCategProduto(String id) {
+        connVendas.conexao();
+        connVendas.executaSQL("SELECT * FROM produtos WHERE id ='"+id+"'");
+        try {
+            connVendas.rs.first();
+            categProduto = connVendas.rs.getString("categoria");
+            connVendas.desconecta();
+        } catch (SQLException ex) {
+            connVendas.desconecta();
+            JOptionPane.showMessageDialog(null, "Erro ao buscar categoria do produto." +ex);
+        }
+        return categProduto;
     }
 }
