@@ -37,6 +37,11 @@ public class VendasView extends javax.swing.JFrame {
     VendasController control = new VendasController();
     
     int flag = 1;
+    int codVenda;
+    int codProduto;
+    String check_portfixo;
+    String check_portmovel;
+    String prot_contrato = "vazio";
     
     /**
      * Creates new form VendasView
@@ -136,9 +141,7 @@ public class VendasView extends javax.swing.JFrame {
         lblSubtotalProdutos2 = new javax.swing.JLabel();
         lblItensVenda = new javax.swing.JLabel();
         btnNovo = new javax.swing.JButton();
-        btnSalvar = new javax.swing.JButton();
-        btnAlterar = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
+        btnFinalizarVenda = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
@@ -161,7 +164,7 @@ public class VendasView extends javax.swing.JFrame {
         jTextServicoId = new javax.swing.JTextField();
         jTextProdutoId = new javax.swing.JTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTableProdutosVenda = new javax.swing.JTable();
+        jTableVendaProdutos = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         lblCliente = new javax.swing.JLabel();
         jTextCliente = new javax.swing.JTextField();
@@ -172,8 +175,9 @@ public class VendasView extends javax.swing.JFrame {
         lblCampoObrigCliente = new javax.swing.JLabel();
         lblCampoObrigVendedor = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTableServicosVenda = new javax.swing.JTable();
+        jTableVendaServicos = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        btnProtocoloContrato = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Vendas");
@@ -318,7 +322,7 @@ public class VendasView extends javax.swing.JFrame {
                                 .addComponent(lblNaturezaVenda)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblCampoObrigNatVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 7, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCheckBoxPortMovel)
@@ -375,9 +379,19 @@ public class VendasView extends javax.swing.JFrame {
 
         btnAddServico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/add16px.png"))); // NOI18N
         btnAddServico.setEnabled(false);
+        btnAddServico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddServicoActionPerformed(evt);
+            }
+        });
 
         btnAddProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/add16px.png"))); // NOI18N
         btnAddProduto.setEnabled(false);
+        btnAddProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddProdutoActionPerformed(evt);
+            }
+        });
 
         jPanel4.setBackground(new java.awt.Color(204, 204, 204));
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -449,32 +463,14 @@ public class VendasView extends javax.swing.JFrame {
             }
         });
 
-        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/salvar16px.png"))); // NOI18N
-        btnSalvar.setMnemonic('s');
-        btnSalvar.setText("Salvar");
-        btnSalvar.setToolTipText("Atalho: Alt+S");
-        btnSalvar.setEnabled(false);
-        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+        btnFinalizarVenda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/salvar16px.png"))); // NOI18N
+        btnFinalizarVenda.setMnemonic('s');
+        btnFinalizarVenda.setText("Finalizar Venda");
+        btnFinalizarVenda.setToolTipText("Atalho: Alt+S");
+        btnFinalizarVenda.setEnabled(false);
+        btnFinalizarVenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalvarActionPerformed(evt);
-            }
-        });
-
-        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/editar16px.png"))); // NOI18N
-        btnAlterar.setText("Alterar");
-        btnAlterar.setEnabled(false);
-        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAlterarActionPerformed(evt);
-            }
-        });
-
-        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/excluir16px.png"))); // NOI18N
-        btnExcluir.setText("Estornar");
-        btnExcluir.setEnabled(false);
-        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluirActionPerformed(evt);
+                btnFinalizarVendaActionPerformed(evt);
             }
         });
 
@@ -628,7 +624,7 @@ public class VendasView extends javax.swing.JFrame {
 
         jTextProdutoId.setEnabled(false);
 
-        jTableProdutosVenda.setModel(new javax.swing.table.DefaultTableModel(
+        jTableVendaProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -639,12 +635,12 @@ public class VendasView extends javax.swing.JFrame {
 
             }
         ));
-        jTableProdutosVenda.addMouseListener(new java.awt.event.MouseAdapter() {
+        jTableVendaProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTableProdutosVendaMouseClicked(evt);
+                jTableVendaProdutosMouseClicked(evt);
             }
         });
-        jScrollPane4.setViewportView(jTableProdutosVenda);
+        jScrollPane4.setViewportView(jTableVendaProdutos);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel2.setEnabled(false);
@@ -662,6 +658,11 @@ public class VendasView extends javax.swing.JFrame {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jCBoxVendedorFocusLost(evt);
+            }
+        });
+        jCBoxVendedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCBoxVendedorActionPerformed(evt);
             }
         });
 
@@ -730,7 +731,7 @@ public class VendasView extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTableServicosVenda.setModel(new javax.swing.table.DefaultTableModel(
+        jTableVendaServicos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -741,14 +742,22 @@ public class VendasView extends javax.swing.JFrame {
 
             }
         ));
-        jTableServicosVenda.addMouseListener(new java.awt.event.MouseAdapter() {
+        jTableVendaServicos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTableServicosVendaMouseClicked(evt);
+                jTableVendaServicosMouseClicked(evt);
             }
         });
-        jScrollPane5.setViewportView(jTableServicosVenda);
+        jScrollPane5.setViewportView(jTableVendaServicos);
 
         jLabel1.setText("Serviços listados para Venda");
+
+        btnProtocoloContrato.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/invoice16px.png"))); // NOI18N
+        btnProtocoloContrato.setText("Protocolo do Contrato");
+        btnProtocoloContrato.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProtocoloContratoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -765,22 +774,6 @@ public class VendasView extends javax.swing.JFrame {
                         .addGap(10, 10, 10)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnNovo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSalvar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAlterar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExcluir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCancelar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSair))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(lblPesquisaVenda)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
@@ -796,39 +789,49 @@ public class VendasView extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnAddProduto))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGap(330, 330, 330)
-                                        .addComponent(btnPesquisaServico, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnAddServico))
+                                    .addComponent(lblServico)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(27, 27, 27)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel1)
-                                            .addComponent(lblServico)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jTextServicoId, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jTextServico, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(0, 0, Short.MAX_VALUE)))))))
+                                        .addComponent(jTextServicoId, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextServico)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnPesquisaServico, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnAddServico))
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnNovo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnFinalizarVenda)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnProtocoloContrato))
+                            .addComponent(jScrollPane3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnCancelar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSair)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -841,8 +844,8 @@ public class VendasView extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jTextServicoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnPesquisaProduto)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnPesquisaProduto)
                         .addComponent(jTextProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jTextProdutoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnAddServico)
@@ -852,8 +855,8 @@ public class VendasView extends javax.swing.JFrame {
                     .addComponent(lblItensVenda)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblPesquisaVenda)
@@ -864,15 +867,14 @@ public class VendasView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovo)
-                    .addComponent(btnSalvar)
-                    .addComponent(btnAlterar)
-                    .addComponent(btnExcluir)
+                    .addComponent(btnFinalizarVenda)
                     .addComponent(btnSair)
-                    .addComponent(btnCancelar))
-                .addContainerGap(49, Short.MAX_VALUE))
+                    .addComponent(btnCancelar)
+                    .addComponent(btnProtocoloContrato))
+                .addContainerGap())
         );
 
-        setSize(new java.awt.Dimension(866, 680));
+        setSize(new java.awt.Dimension(866, 709));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -903,12 +905,10 @@ public class VendasView extends javax.swing.JFrame {
         jTextProduto.setEnabled(!true);
         jTextServico.setEnabled(!true);
         jTablePesquisa.setEnabled(true);
-        jTableProdutosVenda.setEnabled(true);
+        jTableVendaProdutos.setEnabled(true);
         
         btnCancelar.setEnabled(true);
-        btnAlterar.setEnabled(false);
-        btnExcluir.setEnabled(false);
-        btnSalvar.setEnabled(true);
+        btnFinalizarVenda.setEnabled(true);
         btnNovo.setEnabled(false);
         btnPesquisaCliente.setEnabled(true);
         btnPesquisaProduto.setEnabled(!true);
@@ -919,37 +919,114 @@ public class VendasView extends javax.swing.JFrame {
         jFormattedDataVenda.requestFocus();
     }//GEN-LAST:event_btnNovoActionPerformed
     
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        
-        
+    private void btnFinalizarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarVendaActionPerformed
+        try {
+            mod.setId(codVenda);
 
-    }//GEN-LAST:event_btnSalvarActionPerformed
+            connFuncionarios.conexao();
+            connFuncionarios.executaSQL("SELECT * FROM funcionarios WHERE nome+' '+sobrenome = '" + jCBoxVendedor.getSelectedItem() + "'");
+            connFuncionarios.rs.first();
+            mod.setFuncionario_id(connFuncionarios.rs.getInt("id"));
+            connFuncionarios.desconecta();
 
-    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+            connClientes.conexao();
+            connClientes.executaSQL("SELECT * FROM clientes WHERE id = '" + jTextClienteId.getText() + "'");
+            connClientes.rs.first();
+            mod.setCliente_id(connClientes.rs.getInt("id"));
+            connClientes.desconecta();
 
-        btnCancelar.setEnabled(true);
-        btnAlterar.setEnabled(false);
-        btnExcluir.setEnabled(false);
-        btnSalvar.setEnabled(false);
-        btnNovo.setEnabled(true);
-        
-    }//GEN-LAST:event_btnAlterarActionPerformed
+            mod.setFormapagto((String) jCBoxFormaPagto.getSelectedItem());
+            mod.setTipo_venda((String) jCBoxTipoVenda.getSelectedItem());
 
-    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        /*int resposta = 0;
-        resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente excluir?");
+            if (jCheckBoxPortMovel.isSelected()) {
+                check_portmovel = "sim";
+            } else {
+                check_portmovel = "nao";
+            }
 
-        if(resposta == JOptionPane.YES_OPTION) {
-            mod.setId(Integer.parseInt(jTextCodigo.getText()));
-            control.Excluir(mod);
+            if (jCheckBoxPortFixo.isSelected()) {
+                check_portfixo = "sim";
+            } else {
+                check_portfixo = "nao";
+            }
+
+            mod.setPort_movel(check_portmovel);
+            mod.setPort_fixo(check_portfixo);
+            mod.setNtc_fixo(jFormattedNtcFixoHab.getText());
+            mod.setNtc_movel(jFormattedNtcMovelHab.getText());
+            mod.setNtc_movel_portado(jFormattedNtcPortado.getText());
+            mod.setOperadora_port_movel((String) jCBoxOperadoraPortMovel.getSelectedItem());
+            mod.setOperadora_port_fixo((String) jCBoxOperadoraPortFixo.getSelectedItem());
+            mod.setDt_port_fixo(jFormattedDtPortFixo.getText());
+            mod.setDt_port_movel(jFormattedDtPortMovel.getText());
+            mod.setDt_venda(jFormattedDataVenda.getText());
+            mod.setProtocolo_contrato(prot_contrato);
+
+            if (!jCheckBoxPortFixo.isSelected() && !jCheckBoxPortMovel.isSelected()) {
+                control.finalizarVenda(mod);
+            } else if (jCheckBoxPortFixo.isSelected() && !jCheckBoxPortMovel.isSelected()) {
+                control.finalizarVendaPortFixo(mod);
+            } else if (!jCheckBoxPortFixo.isSelected() && jCheckBoxPortMovel.isSelected()) {
+                control.finalizarVendaPortMovel(mod);
+            } else if (jCheckBoxPortFixo.isSelected() && jCheckBoxPortMovel.isSelected()) {
+                control.finalizarVendaAll(mod);
+            }
+
+            jTextCodigo.setEnabled(!true);
+            jFormattedDataVenda.setEnabled(true);
+            jCBoxFormaPagto.setEnabled(true);
+            jCBoxNaturezaVenda.setEnabled(!true);
+            jCheckBoxPortMovel.setEnabled(!true);
+            jCheckBoxPortFixo.setEnabled(!true);
+            jCBoxTipoVenda.setEnabled(!true);
+            jTextCliente.setEnabled(true);
+            jCBoxVendedor.setEnabled(true);
+            jFormattedNtcMovelHab.setEnabled(!true);
+            jFormattedNtcPortado.setEnabled(false);
+            jCBoxOperadoraPortMovel.setEnabled(false);
+            jFormattedDtPortMovel.setEnabled(false);
+            jFormattedNtcFixoHab.setEnabled(!true);
+            jCBoxOperadoraPortFixo.setEnabled(false);
+            jFormattedDtPortFixo.setEnabled(false);
+            jTextProdutoId.setEnabled(false);
+            jTextProduto.setEnabled(!true);
+            jTextServicoId.setEnabled(false);
+            jTextServico.setEnabled(!true);
+            jTablePesquisa.setEnabled(true);
+            jTableVendaProdutos.setEnabled(true);
+
+            btnCancelar.setEnabled(true);
+            btnFinalizarVenda.setEnabled(true);
+            btnNovo.setEnabled(false);
+            btnProtocoloContrato.setEnabled(true);
+            btnPesquisaCliente.setEnabled(true);
+            btnPesquisaProduto.setEnabled(!true);
+            btnPesquisaServico.setEnabled(!true);
+            btnAddProduto.setEnabled(!true);
+            btnAddServico.setEnabled(!true);
+            
+            jTextCodigo.setText("");
+            jFormattedDataVenda.setText("");
+            jTextClienteId.setText("");
+            jTextCliente.setText("");
+            jCheckBoxPortFixo.setSelected(false);
+            jCheckBoxPortMovel.setSelected(false);
+            jFormattedNtcMovelHab.setText("");
+            jFormattedNtcPortado.setText("");
+            jFormattedDtPortMovel.setText("");
+            jFormattedNtcFixoHab.setText("");
+            jFormattedDtPortFixo.setText("");
+            jTextProdutoId.setText("");
+            jTextProduto.setText("");
+            jTextServicoId.setText("");
+            jTextServico.setText("");
+
+            jFormattedDataVenda.requestFocus();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(VendasView.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        btnCancelar.setEnabled(true);
-        btnAlterar.setEnabled(false);
-        btnExcluir.setEnabled(false);
-        btnSalvar.setEnabled(false);
-        btnNovo.setEnabled(true);*/
-    }//GEN-LAST:event_btnExcluirActionPerformed
+    }//GEN-LAST:event_btnFinalizarVendaActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         jTextCodigo.setEnabled(!true);
@@ -966,7 +1043,7 @@ public class VendasView extends javax.swing.JFrame {
         jTextProduto.setEnabled(!true);
         jTextServico.setEnabled(!true);
         jTablePesquisa.setEnabled(!true);
-        jTableProdutosVenda.setEnabled(!true);
+        jTableVendaProdutos.setEnabled(!true);
         
         jTextCodigo.setText("");
         jFormattedDataVenda.setText("");
@@ -977,9 +1054,7 @@ public class VendasView extends javax.swing.JFrame {
         jTextServico.setText(""); 
         
         btnCancelar.setEnabled(!true);
-        btnAlterar.setEnabled(false);
-        btnExcluir.setEnabled(false);
-        btnSalvar.setEnabled(!true);
+        btnFinalizarVenda.setEnabled(!true);
         btnNovo.setEnabled(!false);
         btnPesquisaCliente.setEnabled(!true);
         btnPesquisaProduto.setEnabled(!true);
@@ -1088,9 +1163,9 @@ public class VendasView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jCheckBoxPortFixoActionPerformed
 
-    private void jTableProdutosVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProdutosVendaMouseClicked
+    private void jTableVendaProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableVendaProdutosMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTableProdutosVendaMouseClicked
+    }//GEN-LAST:event_jTableVendaProdutosMouseClicked
 
     private void jCBoxVendedorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jCBoxVendedorFocusLost
         // Faz a validação do campo vendedor e ativa a próxima sequência de dados para preenchimento
@@ -1119,7 +1194,15 @@ public class VendasView extends javax.swing.JFrame {
             mod.setFuncionario_id(connFuncionarios.rs.getInt("id"));
             connFuncionarios.desconecta();
             
-            control.Inserir(mod);
+            control.abrirVenda(mod);
+            
+            jCBoxNaturezaVenda.requestFocus();
+            
+            connVendas.conexao();
+            connVendas.executaSQL("SELECT * FROM vendas");
+            connVendas.rs.last();
+            codVenda = connVendas.rs.getInt("id");
+            connVendas.desconecta();
             
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane, "Não foi possível salvar os dados.\nERRO: "+ex);
@@ -1159,6 +1242,14 @@ public class VendasView extends javax.swing.JFrame {
         } else {
             jFormattedNtcMovelHab.setEnabled(true);
             jFormattedNtcFixoHab.setEnabled(true);
+            jTextProdutoId.setEnabled(true);
+            jTextProduto.setEnabled(true);
+            jTextServicoId.setEnabled(true);
+            jTextServico.setEnabled(true);
+            btnPesquisaProduto.setEnabled(true);
+            btnAddProduto.setEnabled(true);
+            btnPesquisaServico.setEnabled(true);
+            btnAddServico.setEnabled(true);
         }
     }//GEN-LAST:event_jCBoxNaturezaVendaFocusLost
 
@@ -1169,10 +1260,110 @@ public class VendasView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jCBoxTipoVendaFocusLost
 
-    private void jTableServicosVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableServicosVendaMouseClicked
+    private void jTableVendaServicosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableVendaServicosMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTableServicosVendaMouseClicked
+    }//GEN-LAST:event_jTableVendaServicosMouseClicked
 
+    private void btnAddProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProdutoActionPerformed
+        mod.setId(codVenda);
+        mod.setProduto_id(Integer.parseInt(jTextProdutoId.getText()));
+        
+        control.adicionaProduto(mod);
+        
+        conecta.conexao();
+        preencherTabelaVendaProdutos("SELECT * FROM produtos INNER JOIN vendas_produtos ON produtos.id = vendas_produtos.produto_id INNER JOIN vendas ON vendas.id = vendas_produtos.venda_id WHERE vendas.id ="+codVenda);
+        conecta.desconecta();
+        
+        jTextProdutoId.setText("");
+        jTextProduto.setText("");
+    }//GEN-LAST:event_btnAddProdutoActionPerformed
+
+    private void btnAddServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddServicoActionPerformed
+        mod.setId(codVenda);
+        mod.setServico_id(Integer.parseInt(jTextServicoId.getText()));
+        
+        control.adicionaServico(mod);
+        
+        conecta.conexao();
+        preencherTabelaVendaServicos("SELECT * FROM servicos INNER JOIN vendas_servicos ON servicos.id = vendas_servicos.servico_id INNER JOIN vendas ON vendas.id = vendas_servicos.venda_id WHERE vendas.id ="+codVenda);
+        conecta.desconecta();
+        
+        jTextServicoId.setText("");
+        jTextServico.setText("");
+    }//GEN-LAST:event_btnAddServicoActionPerformed
+
+    private void jCBoxVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBoxVendedorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCBoxVendedorActionPerformed
+
+    private void btnProtocoloContratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProtocoloContratoActionPerformed
+        prot_contrato = JOptionPane.showInputDialog("Insira o protocolo de digitalização do contrato:");
+    }//GEN-LAST:event_btnProtocoloContratoActionPerformed
+
+    public void preencherTabelaVendaProdutos(String SQL){
+        ArrayList dados = new ArrayList();
+
+        String[] Colunas = new String[]{"Código", "Nome", "Cor"};
+        conecta.executaSQL(SQL);
+
+        try {
+            conecta.rs.first();
+            do {
+                dados.add(new Object[]{conecta.rs.getInt("id"), conecta.rs.getString("nome")+" - "+conecta.rs.getString("fabricante"), conecta.rs.getString("cor")});
+        } while(conecta.rs.next());
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não existem registros com os termos pesquisados.\nERRO: "+ ex);
+        }
+
+        TabelasModel modelo = new TabelasModel(dados, Colunas);
+
+        jTableVendaProdutos.setModel(modelo);
+        jTableVendaProdutos.getColumnModel().getColumn(0).setPreferredWidth(60);
+        jTableVendaProdutos.getColumnModel().getColumn(0).setResizable(false);
+        jTableVendaProdutos.getColumnModel().getColumn(1).setPreferredWidth(205);
+        jTableVendaProdutos.getColumnModel().getColumn(1).setResizable(false);
+        jTableVendaProdutos.getColumnModel().getColumn(2).setPreferredWidth(130);
+        jTableVendaProdutos.getColumnModel().getColumn(2).setResizable(false);        
+        jTableVendaProdutos.getTableHeader().setReorderingAllowed(false);
+        jTableVendaProdutos.setAutoResizeMode(jTableVendaProdutos.AUTO_RESIZE_OFF);
+        jTableVendaProdutos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        conecta.desconecta();
+    }
+    
+    public void preencherTabelaVendaServicos(String SQL){
+        ArrayList dados = new ArrayList();
+
+        String[] Colunas = new String[]{"Código", "Nome", "Operadora"};
+        conecta.executaSQL(SQL);
+
+        try {
+            conecta.rs.first();
+            do {
+                dados.add(new Object[]{conecta.rs.getInt("id"), conecta.rs.getString("nome")+" - "+conecta.rs.getString("valor"), conecta.rs.getString("operadora")});
+        } while(conecta.rs.next());
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não existem registros com os termos pesquisados.\nERRO: "+ ex);
+        }
+
+        TabelasModel modelo = new TabelasModel(dados, Colunas);
+
+        jTableVendaServicos.setModel(modelo);
+        jTableVendaServicos.getColumnModel().getColumn(0).setPreferredWidth(60);
+        jTableVendaServicos.getColumnModel().getColumn(0).setResizable(false);
+        jTableVendaServicos.getColumnModel().getColumn(1).setPreferredWidth(222);
+        jTableVendaServicos.getColumnModel().getColumn(1).setResizable(false);
+        jTableVendaServicos.getColumnModel().getColumn(2).setPreferredWidth(130);
+        jTableVendaServicos.getColumnModel().getColumn(2).setResizable(false);        
+        jTableVendaServicos.getTableHeader().setReorderingAllowed(false);
+        jTableVendaServicos.setAutoResizeMode(jTableVendaServicos.AUTO_RESIZE_OFF);
+        jTableVendaServicos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        conecta.desconecta();
+    }
+    
     public void preencherTabelaPesquisaCliente(String SQL){
         ArrayList dados = new ArrayList();
 
@@ -1319,15 +1510,14 @@ public class VendasView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddProduto;
     private javax.swing.JButton btnAddServico;
-    private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnFinalizarVenda;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnPesquisaCliente;
     private javax.swing.JButton btnPesquisaProduto;
     private javax.swing.JButton btnPesquisaServico;
+    private javax.swing.JButton btnProtocoloContrato;
     private javax.swing.JButton btnSair;
-    private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox jCBoxFormaPagto;
     private javax.swing.JComboBox jCBoxNaturezaVenda;
     private javax.swing.JComboBox jCBoxOperadoraPortFixo;
@@ -1354,8 +1544,8 @@ public class VendasView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable jTablePesquisa;
-    private javax.swing.JTable jTableProdutosVenda;
-    private javax.swing.JTable jTableServicosVenda;
+    private javax.swing.JTable jTableVendaProdutos;
+    private javax.swing.JTable jTableVendaServicos;
     private javax.swing.JTextField jTextCliente;
     private javax.swing.JTextField jTextClienteId;
     private javax.swing.JTextField jTextCodigo;
