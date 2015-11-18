@@ -129,7 +129,7 @@ public class ProdutosView extends javax.swing.JFrame {
             }
         });
 
-        jCBoxCategoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Modem", "SimCard", "Smartphone", "Tablet", " " }));
+        jCBoxCategoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Modem", "SimCard", "Smartphone", "Tablet" }));
         jCBoxCategoria.setEnabled(false);
 
         lblCategoria.setText("Categoria");
