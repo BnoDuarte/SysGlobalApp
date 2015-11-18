@@ -1270,7 +1270,7 @@ public class VendasView extends javax.swing.JFrame {
 
     private void btnAddProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProdutoActionPerformed
         categ_produto = control.buscaCategProduto(jTextProdutoId.getText());
-        JOptionPane.showMessageDialog(null, categ_produto);
+
         //Verifica se a categoria é SimCard e pede o Iccid, caso contrário pede o Imei.        
         if (categ_produto == "SimCard") {
             iccid = JOptionPane.showInputDialog("Digite o número do ICCID:");
