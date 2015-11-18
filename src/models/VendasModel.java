@@ -14,8 +14,8 @@ public class VendasModel {
     private int produto_id;
     private int servico_id;
     private String formapagto;
-    private int iccid;
-    private int imei;
+    private String iccid;
+    private String imei;
     private String tipo_venda;
     private String port_movel;
     private String port_fixo;
@@ -90,28 +90,28 @@ public class VendasModel {
     /**
      * @return the iccid
      */
-    public int getIccid() {
+    public String getIccid() {
         return iccid;
     }
 
     /**
      * @param iccid the iccid to set
      */
-    public void setIccid(int iccid) {
+    public void setIccid(String iccid) {
         this.iccid = iccid;
     }
 
     /**
      * @return the imei
      */
-    public int getImei() {
+    public String getImei() {
         return imei;
     }
 
     /**
      * @param imei the imei to set
      */
-    public void setImei(int imei) {
+    public void setImei(String imei) {
         this.imei = imei;
     }
 
