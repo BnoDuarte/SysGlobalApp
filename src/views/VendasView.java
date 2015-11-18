@@ -39,9 +39,12 @@ public class VendasView extends javax.swing.JFrame {
     int flag = 1;
     int codVenda;
     int codProduto;
+    String imei;
+    String iccid;
     String check_portfixo;
     String check_portmovel;
     String prot_contrato = "vazio";
+    String categ_produto;
     
     /**
      * Creates new form VendasView
@@ -812,8 +815,9 @@ public class VendasView extends javax.swing.JFrame {
                                 .addComponent(btnNovo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnFinalizarVenda)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnProtocoloContrato))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnProtocoloContrato)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jScrollPane3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1242,9 +1246,9 @@ public class VendasView extends javax.swing.JFrame {
         } else {
             jFormattedNtcMovelHab.setEnabled(true);
             jFormattedNtcFixoHab.setEnabled(true);
-            jTextProdutoId.setEnabled(true);
+            jTextProdutoId.setEnabled(!true);
             jTextProduto.setEnabled(true);
-            jTextServicoId.setEnabled(true);
+            jTextServicoId.setEnabled(!true);
             jTextServico.setEnabled(true);
             btnPesquisaProduto.setEnabled(true);
             btnAddProduto.setEnabled(true);
@@ -1265,17 +1269,32 @@ public class VendasView extends javax.swing.JFrame {
     }//GEN-LAST:event_jTableVendaServicosMouseClicked
 
     private void btnAddProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProdutoActionPerformed
+        categ_produto = control.buscaCategProduto(jTextProdutoId.getText());
+        JOptionPane.showMessageDialog(null, categ_produto);
+        //Verifica se a categoria é SimCard e pede o Iccid, caso contrário pede o Imei.        
+        if (categ_produto == "SimCard") {
+            iccid = JOptionPane.showInputDialog("Digite o número do ICCID:");
+            imei = "0";
+        } else {
+            imei = JOptionPane.showInputDialog("Digite o número do IMEI:");
+            iccid = "0";
+        }
+        
+        // Adiciona um Produto na tabela vendas_produtos e atualiza o jTableVendasProdutos
         mod.setId(codVenda);
         mod.setProduto_id(Integer.parseInt(jTextProdutoId.getText()));
+        mod.setIccid(iccid);
+        mod.setImei(imei);
         
         control.adicionaProduto(mod);
         
         conecta.conexao();
         preencherTabelaVendaProdutos("SELECT * FROM produtos INNER JOIN vendas_produtos ON produtos.id = vendas_produtos.produto_id INNER JOIN vendas ON vendas.id = vendas_produtos.venda_id WHERE vendas.id ="+codVenda);
         conecta.desconecta();
-        
+                
         jTextProdutoId.setText("");
         jTextProduto.setText("");
+               
     }//GEN-LAST:event_btnAddProdutoActionPerformed
 
     private void btnAddServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddServicoActionPerformed
