@@ -11,8 +11,6 @@ public class VendasModel {
     private int id;
     private int funcionario_id;
     private int cliente_id;
-    private int produto_id;
-    private int servico_id;
     private String formapagto;
     private int iccid;
     private int imei;
@@ -71,34 +69,6 @@ public class VendasModel {
      */
     public void setCliente_id(int cliente_id) {
         this.cliente_id = cliente_id;
-    }
-
-    /**
-     * @return the produto_id
-     */
-    public int getProduto_id() {
-        return produto_id;
-    }
-
-    /**
-     * @param produto_id the produto_id to set
-     */
-    public void setProduto_id(int produto_id) {
-        this.produto_id = produto_id;
-    }
-
-    /**
-     * @return the servico_id
-     */
-    public int getServico_id() {
-        return servico_id;
-    }
-
-    /**
-     * @param servico_id the servico_id to set
-     */
-    public void setServico_id(int servico_id) {
-        this.servico_id = servico_id;
     }
 
     /**
