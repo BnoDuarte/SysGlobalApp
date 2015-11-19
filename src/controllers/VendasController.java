@@ -4,6 +4,8 @@ package controllers;
 import configs.ConectaBanco;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import models.VendasModel;
 
@@ -251,5 +253,23 @@ public class VendasController {
             JOptionPane.showMessageDialog(null, "Erro ao buscar categoria do produto." +ex);
         }
         return categProduto;
+    }
+    
+    public void cancelaVenda(VendasModel mod) {
+        connVendas.conexao();
+        
+        try {
+            PreparedStatement pst = connVendas.conn.prepareStatement("DELETE FROM vendas WHERE id = ?");
+            
+            pst.setInt(1, mod.getId());
+            pst.execute();
+            
+            connVendas.desconecta();
+            JOptionPane.showMessageDialog(null, "Venda cancelada com sucesso.");
+            
+        } catch (SQLException ex) {
+            connVendas.desconecta();
+            JOptionPane.showMessageDialog(null, "Não foi possível cancelar a venda.\nERRO: " + ex);
+        }
     }
 }
