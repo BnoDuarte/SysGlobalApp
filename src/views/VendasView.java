@@ -927,6 +927,7 @@ public class VendasView extends javax.swing.JFrame {
         btnPesquisaServico.setEnabled(!true);
         btnAddProduto.setEnabled(!true);
         btnAddServico.setEnabled(!true);
+        btnProtocoloContrato.setEnabled(true);
         
         jFormattedDataVenda.requestFocus();
     }//GEN-LAST:event_btnNovoActionPerformed
@@ -1076,6 +1077,7 @@ public class VendasView extends javax.swing.JFrame {
             btnPesquisaServico.setEnabled(!true);
             btnAddProduto.setEnabled(!true);
             btnAddServico.setEnabled(!true);
+            btnProtocoloContrato.setEnabled(false);
 
         } else {
 
@@ -1118,6 +1120,7 @@ public class VendasView extends javax.swing.JFrame {
                 btnPesquisaServico.setEnabled(!true);
                 btnAddProduto.setEnabled(!true);
                 btnAddServico.setEnabled(!true);
+                btnProtocoloContrato.setEnabled(false);
             }
         }
     }//GEN-LAST:event_btnCancelarActionPerformed
