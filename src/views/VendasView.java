@@ -43,7 +43,7 @@ public class VendasView extends javax.swing.JFrame {
     String iccid;
     String check_portfixo;
     String check_portmovel;
-    String prot_contrato = "vazio";
+    String prot_contrato;
     String categ_produto;
     
     /**
@@ -651,6 +651,11 @@ public class VendasView extends javax.swing.JFrame {
         lblCliente.setText("Nome do Cliente");
 
         jTextCliente.setEnabled(false);
+        jTextCliente.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextClienteFocusLost(evt);
+            }
+        });
 
         lblVendedor.setText("Vendedor");
 
@@ -756,6 +761,7 @@ public class VendasView extends javax.swing.JFrame {
 
         btnProtocoloContrato.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/icones/invoice16px.png"))); // NOI18N
         btnProtocoloContrato.setText("Protocolo do Contrato");
+        btnProtocoloContrato.setEnabled(false);
         btnProtocoloContrato.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnProtocoloContratoActionPerformed(evt);
@@ -780,13 +786,13 @@ public class VendasView extends javax.swing.JFrame {
                         .addComponent(lblPesquisaVenda)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lblItensVenda, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblProduto, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblItensVenda)
+                            .addComponent(lblProduto)
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jTextProdutoId, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextProduto)
+                                .addComponent(jTextProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnPesquisaProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -854,20 +860,22 @@ public class VendasView extends javax.swing.JFrame {
                         .addComponent(jTextProdutoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnAddServico)
                     .addComponent(btnAddProduto))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblItensVenda)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblItensVenda)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblPesquisaVenda)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovo)
@@ -875,10 +883,10 @@ public class VendasView extends javax.swing.JFrame {
                     .addComponent(btnSair)
                     .addComponent(btnCancelar)
                     .addComponent(btnProtocoloContrato))
-                .addContainerGap())
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
-        setSize(new java.awt.Dimension(866, 709));
+        setSize(new java.awt.Dimension(866, 749));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1033,38 +1041,85 @@ public class VendasView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFinalizarVendaActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        jTextCodigo.setEnabled(!true);
-        jFormattedDataVenda.setEnabled(!true);
-        jCBoxFormaPagto.setEnabled(!true);
-        jCBoxNaturezaVenda.setEnabled(!true);
-        jCheckBoxPortMovel.setEnabled(!true);
-        jCheckBoxPortFixo.setEnabled(!true);
-        jCBoxTipoVenda.setEnabled(!true);
-        jTextCliente.setEnabled(!true);
-        jCBoxVendedor.setEnabled(!true);
-        jFormattedNtcMovelHab.setEnabled(!true);
-        jFormattedNtcFixoHab.setEnabled(!true);
-        jTextProduto.setEnabled(!true);
-        jTextServico.setEnabled(!true);
-        jTablePesquisa.setEnabled(!true);
-        jTableVendaProdutos.setEnabled(!true);
-        
-        jTextCodigo.setText("");
-        jFormattedDataVenda.setText("");
-        jCheckBoxPortMovel.setSelected(false);
-        jTextCliente.setText("");
-        jFormattedNtcMovelHab.setText("");
-        jTextProduto.setText("");
-        jTextServico.setText(""); 
-        
-        btnCancelar.setEnabled(!true);
-        btnFinalizarVenda.setEnabled(!true);
-        btnNovo.setEnabled(!false);
-        btnPesquisaCliente.setEnabled(!true);
-        btnPesquisaProduto.setEnabled(!true);
-        btnPesquisaServico.setEnabled(!true);
-        btnAddProduto.setEnabled(!true);
-        btnAddServico.setEnabled(!true);
+
+        if (jTextCodigo.getText().isEmpty()) {
+
+            jTextCodigo.setEnabled(!true);
+            jFormattedDataVenda.setEnabled(!true);
+            jCBoxFormaPagto.setEnabled(!true);
+            jCBoxNaturezaVenda.setEnabled(!true);
+            jCheckBoxPortMovel.setEnabled(!true);
+            jCheckBoxPortFixo.setEnabled(!true);
+            jCBoxTipoVenda.setEnabled(!true);
+            jTextCliente.setEnabled(!true);
+            jCBoxVendedor.setEnabled(!true);
+            jFormattedNtcMovelHab.setEnabled(!true);
+            jFormattedNtcFixoHab.setEnabled(!true);
+            jTextProduto.setEnabled(!true);
+            jTextServico.setEnabled(!true);
+            jTablePesquisa.setEnabled(!true);
+            jTableVendaProdutos.setEnabled(!true);
+
+            jTextCodigo.setText("");
+            jFormattedDataVenda.setText("");
+            jCheckBoxPortMovel.setSelected(false);
+            jTextCliente.setText("");
+            jFormattedNtcMovelHab.setText("");
+            jTextProduto.setText("");
+            jTextServico.setText("");
+
+            btnCancelar.setEnabled(!true);
+            btnFinalizarVenda.setEnabled(!true);
+            btnNovo.setEnabled(!false);
+            btnPesquisaCliente.setEnabled(!true);
+            btnPesquisaProduto.setEnabled(!true);
+            btnPesquisaServico.setEnabled(!true);
+            btnAddProduto.setEnabled(!true);
+            btnAddServico.setEnabled(!true);
+
+        } else {
+
+            int resposta = 0;
+            resposta = JOptionPane.showConfirmDialog(rootPane, "Deseja realmente cancelar a venda?");
+
+            if (resposta == JOptionPane.YES_OPTION) {
+                mod.setId(Integer.parseInt(jTextCodigo.getText()));
+                control.cancelaVenda(mod);
+
+                jTextCodigo.setEnabled(!true);
+                jFormattedDataVenda.setEnabled(!true);
+                jCBoxFormaPagto.setEnabled(!true);
+                jCBoxNaturezaVenda.setEnabled(!true);
+                jCheckBoxPortMovel.setEnabled(!true);
+                jCheckBoxPortFixo.setEnabled(!true);
+                jCBoxTipoVenda.setEnabled(!true);
+                jTextCliente.setEnabled(!true);
+                jCBoxVendedor.setEnabled(!true);
+                jFormattedNtcMovelHab.setEnabled(!true);
+                jFormattedNtcFixoHab.setEnabled(!true);
+                jTextProduto.setEnabled(!true);
+                jTextServico.setEnabled(!true);
+                jTablePesquisa.setEnabled(!true);
+                jTableVendaProdutos.setEnabled(!true);
+
+                jTextCodigo.setText("");
+                jFormattedDataVenda.setText("");
+                jCheckBoxPortMovel.setSelected(false);
+                jTextCliente.setText("");
+                jFormattedNtcMovelHab.setText("");
+                jTextProduto.setText("");
+                jTextServico.setText("");
+
+                btnCancelar.setEnabled(!true);
+                btnFinalizarVenda.setEnabled(!true);
+                btnNovo.setEnabled(!false);
+                btnPesquisaCliente.setEnabled(!true);
+                btnPesquisaProduto.setEnabled(!true);
+                btnPesquisaServico.setEnabled(!true);
+                btnAddProduto.setEnabled(!true);
+                btnAddServico.setEnabled(!true);
+            }
+        }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSairMouseClicked
@@ -1208,6 +1263,8 @@ public class VendasView extends javax.swing.JFrame {
             codVenda = connVendas.rs.getInt("id");
             connVendas.desconecta();
             
+            jTextCodigo.setText(Integer.toString(codVenda));
+            
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane, "Não foi possível salvar os dados.\nERRO: "+ex);
         }
@@ -1254,6 +1311,7 @@ public class VendasView extends javax.swing.JFrame {
             btnAddProduto.setEnabled(true);
             btnPesquisaServico.setEnabled(true);
             btnAddServico.setEnabled(true);
+            btnProtocoloContrato.setEnabled(true);
         }
     }//GEN-LAST:event_jCBoxNaturezaVendaFocusLost
 
@@ -1318,6 +1376,10 @@ public class VendasView extends javax.swing.JFrame {
     private void btnProtocoloContratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProtocoloContratoActionPerformed
         prot_contrato = JOptionPane.showInputDialog("Insira o protocolo de digitalização do contrato:");
     }//GEN-LAST:event_btnProtocoloContratoActionPerformed
+
+    private void jTextClienteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextClienteFocusLost
+        
+    }//GEN-LAST:event_jTextClienteFocusLost
 
     public void preencherTabelaVendaProdutos(String SQL){
         ArrayList dados = new ArrayList();
